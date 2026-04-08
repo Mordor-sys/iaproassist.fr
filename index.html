@@ -3,1026 +3,1380 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IA ProAssist – Gagnez des clients automatiquement même en intervention</title>
-<meta name="description" content="L'IA qui répond à vos clients 24h/24 pendant que vous êtes sur le chantier. Plombiers, électriciens, serruriers — récupérez vos clients automatiquement. Installation en 48h.">
+<title>IA ProAssist – L'IA qui répond à vos clients pendant que vous travaillez</title>
+<meta name="description" content="L'IA qui répond à vos clients 24h/24 pendant que vous êtes sur le chantier. Plombiers, électriciens, serruriers — ne perdez plus aucun client. Installation en 48h.">
 <meta property="og:title" content="IA ProAssist – Gagnez des clients automatiquement">
 <meta property="og:description" content="L'IA qui répond à vos clients 24h/24 pendant que vous êtes en intervention. Résultats dès la 1ère semaine.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
 :root{
-  --blue:#0D3B66;--blue-dark:#071e38;--blue-mid:#1a5a9a;--blue-light:#e8f0f8;
-  --orange:#F95738;--orange-h:#e04020;--orange-light:rgba(249,87,56,.12);
-  --white:#fff;--gray-bg:#F6F7F9;--gray-text:#2d2d2d;--gray-mid:#666;--gray-border:#e0e0e0;
-  --green:#1d9e75;--green-light:rgba(29,158,117,.1);
-  --shadow-sm:0 2px 8px rgba(13,59,102,.07);
-  --shadow-md:0 6px 24px rgba(13,59,102,.11);
-  --shadow-lg:0 16px 48px rgba(13,59,102,.15);
-  --radius:10px;--radius-lg:16px;--radius-xl:24px;
+  --ink:#0c1824;
+  --ink-90:rgba(12,24,36,.9);
+  --ink-70:rgba(12,24,36,.7);
+  --ink-50:rgba(12,24,36,.5);
+  --ink-30:rgba(12,24,36,.3);
+  --ink-12:rgba(12,24,36,.12);
+  --ink-06:rgba(12,24,36,.06);
+  --ink-03:rgba(12,24,36,.03);
+
+  --flame:#E8523F;
+  --flame-dark:#c9382a;
+  --flame-10:rgba(232,82,63,.1);
+  --flame-20:rgba(232,82,63,.2);
+  --flame-40:rgba(232,82,63,.4);
+
+  --sea:#1B6B93;
+  --sea-dark:#124d6b;
+  --sea-light:#e6f2f8;
+
+  --mint:#19A676;
+  --mint-10:rgba(25,166,118,.1);
+  --mint-20:rgba(25,166,118,.2);
+
+  --cream:#FAFAF8;
+  --white:#FFFFFF;
+  --warm-gray:#F4F3F0;
+
+  --font-display:'Instrument Serif', Georgia, serif;
+  --font-body:'DM Sans', system-ui, sans-serif;
+  --font-mono:'JetBrains Mono', monospace;
+
+  --ease-out-expo:cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-back:cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --r-sm:8px;
+  --r-md:14px;
+  --r-lg:22px;
+  --r-xl:32px;
+
+  --shadow-subtle:0 1px 3px rgba(12,24,36,.04), 0 4px 12px rgba(12,24,36,.03);
+  --shadow-card:0 2px 8px rgba(12,24,36,.05), 0 12px 36px rgba(12,24,36,.06);
+  --shadow-elevated:0 8px 24px rgba(12,24,36,.08), 0 24px 64px rgba(12,24,36,.08);
+  --shadow-glow:0 0 0 1px var(--flame-20), 0 8px 40px var(--flame-20);
 }
-html{scroll-behavior:smooth}
-body{font-family:'Open Sans',sans-serif;color:var(--gray-text);background:var(--white);line-height:1.7;overflow-x:hidden}
 
-/* ── PROGRESS BAR ── */
-#progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),#ffb347);width:0%;z-index:9999;transition:width .1s}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:var(--font-body);color:var(--ink);background:var(--cream);line-height:1.7;overflow-x:hidden}
 
-/* ── URGENCY BAR ── */
-.ubar{
-  background:linear-gradient(90deg,#c0392b,var(--orange));
-  text-align:center;padding:11px 20px;
-  font-family:'Montserrat',sans-serif;font-weight:700;font-size:.82rem;color:#fff;
-  letter-spacing:.3px;position:relative;z-index:200;
+/* ────────── UTILITY ────────── */
+.container{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+/* ────────── SCROLL REVEAL ────────── */
+[data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease-out-expo), transform .7s var(--ease-out-expo)}
+[data-reveal].is-visible{opacity:1;transform:none}
+[data-reveal-delay="1"]{transition-delay:.08s}
+[data-reveal-delay="2"]{transition-delay:.16s}
+[data-reveal-delay="3"]{transition-delay:.24s}
+[data-reveal-delay="4"]{transition-delay:.32s}
+[data-reveal-delay="5"]{transition-delay:.4s}
+
+/* ────────── TOPBAR ────────── */
+.topbar{
+  background:var(--ink);color:#fff;text-align:center;
+  padding:10px 20px;font-size:.78rem;font-weight:500;
+  letter-spacing:.02em;line-height:1.5
 }
-.ubar span{opacity:.85;font-weight:400}
+.topbar strong{color:var(--flame);font-weight:700}
 
-/* ── NAV ── */
-nav{
+/* ────────── NAV ────────── */
+.nav{
   position:sticky;top:0;z-index:100;
-  background:rgba(7,30,56,.97);backdrop-filter:blur(12px);
-  padding:0 5%;display:flex;align-items:center;justify-content:space-between;
-  height:68px;border-bottom:1px solid rgba(255,255,255,.07);
+  background:rgba(250,250,248,.88);backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid var(--ink-06);
   transition:box-shadow .3s
 }
-nav.scrolled{box-shadow:0 4px 30px rgba(0,0,0,.3)}
+.nav.scrolled{box-shadow:0 4px 30px rgba(12,24,36,.06)}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;max-width:1180px;margin:0 auto;
+  padding:0 clamp(20px,5vw,64px)
+}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-icon{width:36px;height:36px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;transition:transform .2s}
-.logo:hover .logo-icon{transform:rotate(-5deg) scale(1.05)}
-.logo-icon svg{width:20px;height:20px;fill:#fff}
-.logo-text{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.15rem;color:#fff}
-.logo-text em{color:var(--orange);font-style:normal}
-.nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{color:rgba(255,255,255,.7);text-decoration:none;font-family:'Montserrat',sans-serif;font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px;transition:color .2s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--orange);transition:width .2s}
-.nav-links a:hover{color:#fff}
+.logo-mark{
+  width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--flame),#f47b5e);
+  display:grid;place-items:center;
+  transition:transform .2s var(--ease-out-back)
+}
+.logo:hover .logo-mark{transform:rotate(-6deg) scale(1.06)}
+.logo-mark svg{width:17px;height:17px;fill:#fff}
+.logo-name{font-family:var(--font-display);font-size:1.25rem;color:var(--ink);letter-spacing:-.01em}
+.logo-name em{color:var(--flame);font-style:italic}
+
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{
+  color:var(--ink-50);text-decoration:none;font-size:.84rem;
+  font-weight:600;letter-spacing:.01em;transition:color .2s;
+  position:relative
+}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-3px;left:0;
+  width:0;height:1.5px;background:var(--flame);
+  transition:width .25s var(--ease-out-expo)
+}
 .nav-links a:hover::after{width:100%}
-.nav-cta{background:var(--orange);color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:.85rem;padding:10px 22px;border-radius:6px;text-decoration:none;transition:all .2s;white-space:nowrap}
-.nav-cta:hover{background:var(--orange-h);transform:translateY(-1px);box-shadow:0 6px 20px rgba(249,87,56,.4)}
+
+.nav-cta{
+  background:var(--ink);color:#fff;
+  font-weight:700;font-size:.82rem;
+  padding:10px 20px;border-radius:var(--r-sm);
+  text-decoration:none;transition:all .2s;
+  border:1.5px solid var(--ink)
+}
+.nav-cta:hover{background:transparent;color:var(--ink)}
 
 /* Hamburger */
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
-.hamburger span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:all .3s}
-.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-.hamburger.open span:nth-child(2){opacity:0}
-.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(7,30,56,.98);backdrop-filter:blur(12px);padding:24px 6%;z-index:99;border-bottom:1px solid rgba(255,255,255,.1)}
-.mobile-menu.open{display:block}
-.mobile-menu ul{list-style:none;display:flex;flex-direction:column;gap:0}
-.mobile-menu a{display:block;color:rgba(255,255,255,.8);text-decoration:none;font-family:'Montserrat',sans-serif;font-weight:600;font-size:.95rem;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.07);transition:color .2s}
-.mobile-menu a:hover{color:var(--orange)}
-.mobile-menu .m-cta{display:block;margin-top:18px;background:var(--orange);color:#fff;text-align:center;padding:14px;border-radius:8px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:.95rem;text-decoration:none}
-
-/* ── HERO ── */
-#hero{
-  min-height:100vh;
-  background:linear-gradient(150deg,var(--blue) 0%,#092540 50%,var(--blue-dark) 100%);
-  display:flex;flex-direction:column;position:relative;overflow:hidden
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;-webkit-tap-highlight-color:transparent}
+.hamburger svg{width:24px;height:24px;stroke:var(--ink);stroke-width:2;stroke-linecap:round;fill:none}
+.mobile-menu{
+  display:none;position:fixed;top:64px;left:0;right:0;bottom:0;
+  background:rgba(250,250,248,.97);backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  z-index:99;padding:24px clamp(20px,5vw,64px);
+  flex-direction:column;gap:0
 }
-.hero-orb{position:absolute;pointer-events:none;filter:blur(1px)}
-.hero-orb-1{top:-8%;left:-4%;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(249,87,56,.15) 0%,transparent 65%);animation:orbFloat 8s ease-in-out infinite}
-.hero-orb-2{bottom:-8%;right:-4%;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(26,90,154,.22) 0%,transparent 65%);animation:orbFloat 10s ease-in-out infinite reverse}
-@keyframes orbFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(12px,-18px)}}
-.grid-bg{position:absolute;inset:0;opacity:.04;background-image:linear-gradient(rgba(255,255,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,1) 1px,transparent 1px);background-size:55px 55px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{
+  display:block;padding:16px 0;
+  font-size:1.05rem;font-weight:600;color:var(--ink-70);
+  text-decoration:none;border-bottom:1px solid var(--ink-06);
+  transition:color .2s
+}
+.mobile-menu a:hover{color:var(--flame)}
+.mobile-menu .mob-cta{
+  margin-top:20px;display:block;text-align:center;
+  background:var(--flame);color:#fff;padding:16px;
+  border-radius:var(--r-md);font-weight:700;font-size:.95rem;
+  text-decoration:none
+}
 
-.hero-inner{flex:1;display:flex;align-items:center;padding:80px 8% 60px;gap:56px;position:relative;z-index:1}
-.hero-left{flex:1;max-width:640px}
+/* ────────── HERO ────────── */
+.hero{
+  min-height:100vh;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  background:var(--ink);color:#fff
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 45%, rgba(232,82,63,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 85% 20%, rgba(27,107,147,.15) 0%, transparent 70%),
+    linear-gradient(175deg, #0c1824 0%, #0f2233 40%, #0c1824 100%);
+}
+.hero-grid{
+  position:absolute;inset:0;opacity:.035;
+  background-image:
+    linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);
+  background-size:64px 64px
+}
+.hero-grain{
+  position:absolute;inset:0;opacity:.3;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+}
 
-.hero-badge{
+.hero-inner{
+  flex:1;display:grid;grid-template-columns:1fr .85fr;
+  gap:48px;align-items:center;
+  max-width:1180px;margin:0 auto;width:100%;
+  padding:clamp(80px,12vh,140px) clamp(20px,5vw,64px) clamp(60px,8vh,100px);
+  position:relative;z-index:1
+}
+
+.hero-tag{
   display:inline-flex;align-items:center;gap:8px;
-  background:rgba(249,87,56,.14);border:1px solid rgba(249,87,56,.3);
-  color:#ffb5a0;border-radius:20px;padding:6px 16px;
-  font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:22px;
-  animation:fadeInUp .6s ease both
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  padding:6px 14px;border-radius:50px;
+  font-size:.72rem;font-weight:600;color:rgba(255,255,255,.55);
+  letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:20px
 }
-.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.6)}}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--flame);animation:blink-dot 2.4s ease infinite}
+@keyframes blink-dot{0%,100%{opacity:1}50%{opacity:.3}}
 
-.hero-h1{
-  font-family:'Montserrat',sans-serif;font-size:clamp(2rem,4.2vw,3.1rem);
-  font-weight:900;color:#fff;line-height:1.1;margin-bottom:18px;
-  animation:fadeInUp .6s .1s ease both
+.hero h1{
+  font-family:var(--font-display);
+  font-size:clamp(2.4rem,5.2vw,3.8rem);
+  font-weight:400;line-height:1.08;
+  letter-spacing:-.02em;margin-bottom:20px
 }
-.hero-h1 em{color:var(--orange);font-style:normal;position:relative}
+.hero h1 em{color:var(--flame);font-style:italic}
 
-.hero-sub-money{
-  font-family:'Montserrat',sans-serif;font-weight:700;
-  font-size:clamp(.95rem,1.8vw,1.1rem);color:rgba(255,255,255,.9);
-  border-left:3px solid var(--orange);padding-left:14px;margin-bottom:14px;
-  animation:fadeInUp .6s .2s ease both
+.hero-lead{
+  font-size:clamp(.92rem,1.1vw,1.02rem);
+  color:rgba(255,255,255,.5);max-width:480px;
+  line-height:1.75;margin-bottom:24px
 }
-.hero-sub{font-size:.96rem;color:rgba(255,255,255,.6);max-width:520px;margin-bottom:18px;line-height:1.75;animation:fadeInUp .6s .25s ease both}
 
-.hero-killer{
-  background:rgba(249,87,56,.1);border:1px solid rgba(249,87,56,.22);
-  border-radius:8px;padding:13px 16px;margin-bottom:28px;
-  font-size:.88rem;color:#ffd4c8;line-height:1.6;
-  animation:fadeInUp .6s .3s ease both
+.hero-proof{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:28px;font-size:.84rem;color:rgba(255,255,255,.65)
 }
-.hero-killer strong{color:var(--orange)}
+.hero-proof .green-dot{
+  width:8px;height:8px;border-radius:50%;background:#2ecc71;
+  box-shadow:0 0 10px rgba(46,204,113,.5);flex-shrink:0
+}
+.hero-proof strong{color:#fff}
 
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;align-items:center;animation:fadeInUp .6s .35s ease both}
-.btn-main{
-  background:linear-gradient(135deg,var(--orange),#e8472a);color:#fff;
-  font-family:'Montserrat',sans-serif;font-weight:800;font-size:1rem;
-  padding:16px 28px;border-radius:8px;border:none;cursor:pointer;
-  text-decoration:none;display:inline-block;
-  box-shadow:0 4px 24px rgba(249,87,56,.45),0 0 0 0 rgba(249,87,56,.3);
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--flame);color:#fff;
+  font-family:var(--font-body);font-weight:700;font-size:.92rem;
+  padding:15px 28px;border-radius:var(--r-md);border:none;cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 4px 24px var(--flame-40),inset 0 1px 0 rgba(255,255,255,.15);
+  transition:all .2s var(--ease-out-expo)
+}
+.btn-primary:hover{background:var(--flame-dark);transform:translateY(-2px);box-shadow:0 8px 36px var(--flame-40)}
+.btn-primary svg{width:16px;height:16px;fill:currentColor}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:6px;
+  color:rgba(255,255,255,.6);
+  font-weight:600;font-size:.88rem;
+  padding:15px 20px;text-decoration:none;
+  border:1.5px solid rgba(255,255,255,.12);border-radius:var(--r-md);
   transition:all .2s
 }
-.btn-main:hover{background:linear-gradient(135deg,var(--orange-h),#c83618);transform:translateY(-2px);box-shadow:0 8px 32px rgba(249,87,56,.55),0 0 0 6px rgba(249,87,56,.1)}
-.btn-ghost{
-  background:transparent;color:#fff;font-family:'Montserrat',sans-serif;font-weight:600;
-  font-size:.9rem;padding:14px 24px;border-radius:8px;border:1.5px solid rgba(255,255,255,.22);
-  text-decoration:none;display:inline-block;transition:all .2s
-}
-.btn-ghost:hover{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.08);transform:translateY(-1px)}
-.hero-micro{margin-top:16px;font-size:.8rem;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;animation:fadeInUp .6s .4s ease both}
+.btn-secondary:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.04)}
 
-.local-badge{
-  display:inline-flex;align-items:center;gap:10px;
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
-  padding:9px 16px;border-radius:50px;margin:16px 0 4px;
-  font-size:.85rem;color:#fff;animation:fadeInUp .6s .28s ease both;
-}
-.local-dot{width:9px;height:9px;background:#2ecc71;border-radius:50%;flex-shrink:0;box-shadow:0 0 10px #2ecc71;animation:pulse 2s infinite}
-.local-badge strong{color:var(--orange)}
-.local-count{font-size:.72rem;color:rgba(255,255,255,.4);margin-bottom:20px;display:block;animation:fadeInUp .6s .3s ease both}
+.hero-micro{font-size:.76rem;color:rgba(255,255,255,.3);display:flex;gap:16px;flex-wrap:wrap}
+.hero-micro span{display:flex;align-items:center;gap:4px}
 
-/* Hero right */
-.hero-right{flex:0 0 auto;width:360px;display:flex;flex-direction:column;gap:13px;animation:fadeInUp .6s .45s ease both}
-.mcard{
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
-  border-radius:14px;padding:17px 19px;backdrop-filter:blur(8px);
-  transition:transform .2s,border-color .2s
+/* Hero right — demo cards */
+.hero-cards{display:flex;flex-direction:column;gap:14px}
+.demo-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--r-lg);padding:20px;
+  backdrop-filter:blur(12px);
+  transition:transform .3s var(--ease-out-expo), border-color .3s
 }
-.mcard:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.18)}
-.mcard-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.35);margin-bottom:9px}
-.mmsg{background:rgba(255,255,255,.08);border-radius:7px;padding:9px 12px;font-size:.82rem;color:rgba(255,255,255,.82);margin-bottom:6px;transition:background .2s}
-.mmsg.ai{background:rgba(249,87,56,.16);border-left:3px solid var(--orange);color:#ffc8b5;display:flex;align-items:flex-start;gap:7px}
-.typing-dot{display:inline-block;animation:blink 1.4s infinite both}
-.typing-dot:nth-child(2){animation-delay:.2s}
-.typing-dot:nth-child(3){animation-delay:.4s}
-@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
-.mstat{display:flex;align-items:center;gap:12px}
-.mstat-n{font-family:'Montserrat',sans-serif;font-size:1.85rem;font-weight:900;color:#fff}
-.mstat-l{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.4}
-.mstat-b{margin-left:auto;background:rgba(29,158,117,.2);color:#6ef0b0;font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(29,158,117,.28)}
+.demo-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.14)}
+.demo-label{
+  font-size:.66rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:12px
+}
+.msg{
+  padding:10px 14px;border-radius:10px;
+  font-size:.82rem;line-height:1.5;margin-bottom:6px
+}
+.msg-user{background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);border-radius:10px 10px 4px 10px}
+.msg-ai{
+  background:var(--flame-10);border-left:2px solid var(--flame);
+  color:rgba(255,255,255,.8);display:flex;gap:8px;
+  border-radius:4px 10px 10px 10px
+}
+.msg-ai .ai-icon{
+  width:20px;height:20px;border-radius:5px;
+  background:var(--flame-20);display:grid;place-items:center;
+  flex-shrink:0;font-size:.65rem;margin-top:2px
+}
+.stat-card{display:flex;align-items:center;gap:14px}
+.stat-big{font-family:var(--font-display);font-size:2.4rem;color:#fff;line-height:1}
+.stat-meta{font-size:.78rem;color:rgba(255,255,255,.4);line-height:1.4}
+.stat-badge{
+  margin-left:auto;
+  background:var(--mint-10);border:1px solid var(--mint-20);
+  color:#6ef0b0;font-size:.68rem;font-weight:700;
+  padding:4px 10px;border-radius:50px
+}
+.rdv-line{
+  display:flex;align-items:center;gap:8px;
+  font-size:.8rem;color:rgba(255,255,255,.55);
+  padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)
+}
+.rdv-line:last-child{border:none}
+.rdv-time{
+  font-family:var(--font-mono);font-size:.72rem;
+  color:var(--flame);font-weight:500;flex-shrink:0;width:58px
+}
 
-/* ── STATS ── */
-.stats{
-  background:linear-gradient(90deg,var(--blue),var(--blue-mid));
-  padding:36px 8%;display:flex;justify-content:space-around;gap:16px;flex-wrap:wrap;
-  border-bottom:1px solid rgba(255,255,255,.06)
+/* ────────── METRICS BAR ────────── */
+.metrics{
+  background:var(--white);border-bottom:1px solid var(--ink-06);
+  padding:32px 0
 }
-.stat{text-align:center}
-.stat-n{font-family:'Montserrat',sans-serif;font-size:2rem;font-weight:900;color:#fff}
-.stat-n em{color:var(--orange);font-style:normal}
-.stat-d{font-size:.82rem;color:rgba(255,255,255,.5);margin-top:4px}
+.metrics-inner{
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap
+}
+.metric{text-align:center;flex:1;min-width:120px}
+.metric-n{font-family:var(--font-display);font-size:clamp(1.6rem,2.4vw,2.2rem);color:var(--ink);line-height:1}
+.metric-n em{color:var(--flame);font-style:italic}
+.metric-d{font-size:.76rem;color:var(--ink-50);margin-top:4px;font-weight:500}
 
-/* ── SECTIONS ── */
-.sec{padding:88px 8%}
-.sec-alt{background:var(--gray-bg)}
-.lbl{display:inline-block;color:var(--orange);font-family:'Montserrat',sans-serif;font-weight:700;font-size:.73rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
-.ttl{font-family:'Montserrat',sans-serif;font-size:clamp(1.55rem,3vw,2.2rem);font-weight:800;color:var(--blue);line-height:1.2;margin-bottom:12px}
-.dsc{font-size:.96rem;color:var(--gray-mid);max-width:560px;line-height:1.75}
+/* ────────── SECTIONS ────────── */
+.section{padding:clamp(64px,10vh,100px) 0}
+.section-alt{background:var(--white)}
+.section-dark{background:var(--ink);color:#fff}
 
-/* ── PROBLÈME ── */
-.prob-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:44px}
-.prob-card{
-  background:#fff;border-radius:var(--radius-lg);padding:26px 22px;
-  border-left:4px solid var(--orange);box-shadow:var(--shadow-sm);
-  transition:all .25s
+.label{
+  font-size:.68rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.12em;color:var(--flame);margin-bottom:12px;
+  display:inline-block
 }
-.prob-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
-.prob-icon{font-size:1.6rem;margin-bottom:12px}
-.prob-card h4{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.93rem;color:var(--gray-text);margin-bottom:5px}
-.prob-card p{font-size:.83rem;color:var(--gray-mid);line-height:1.6}
-.prob-footer{
-  margin-top:36px;background:var(--blue);border-radius:var(--radius-lg);padding:22px 28px;
-  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
-  box-shadow:var(--shadow-md)
+.section-dark .label{color:rgba(255,255,255,.4)}
+.heading{
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem,3.5vw,2.8rem);
+  font-weight:400;line-height:1.12;letter-spacing:-.02em;
+  margin-bottom:14px;max-width:600px
 }
-.prob-footer-icon{font-size:1.8rem;flex-shrink:0}
-.prob-footer p{color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:1rem;margin:0}
-.prob-footer span{color:rgba(255,255,255,.6);font-weight:400;font-size:.88rem;display:block;margin-top:4px}
+.heading em{font-style:italic;color:var(--flame)}
+.section-dark .heading{color:#fff}
+.section-dark .heading em{color:var(--flame)}
+.desc{font-size:.94rem;color:var(--ink-50);max-width:520px;line-height:1.75}
+.section-dark .desc{color:rgba(255,255,255,.45)}
 
-/* ── SOLUTION ── */
-.sol-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:48px}
-.sol-list{list-style:none;display:flex;flex-direction:column;gap:14px}
-.sol-list li{
-  display:flex;align-items:flex-start;gap:14px;
-  background:#fff;border-radius:var(--radius);padding:18px 20px;
-  border:1.5px solid var(--gray-border);
-  transition:all .2s;cursor:default
+/* ────────── PROBLÈME ────────── */
+.problem-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:16px;margin-top:48px
 }
-.sol-list li:hover{border-color:var(--blue);box-shadow:var(--shadow-sm);transform:translateX(4px)}
-.sol-num{
-  width:36px;height:36px;border-radius:8px;background:var(--blue);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  font-family:'Montserrat',sans-serif;font-weight:900;font-size:.95rem;color:#fff;
+.problem-card{
+  background:var(--white);border-radius:var(--r-lg);
+  padding:28px 24px;border:1px solid var(--ink-06);
+  transition:all .3s var(--ease-out-expo);
+  position:relative;overflow:hidden
+}
+.problem-card::before{
+  content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+  background:var(--flame);transform:scaleY(0);transform-origin:top;
+  transition:transform .3s var(--ease-out-expo)
+}
+.problem-card:hover{box-shadow:var(--shadow-card);transform:translateY(-4px)}
+.problem-card:hover::before{transform:scaleY(1)}
+.problem-icon{font-size:1.4rem;margin-bottom:14px;display:block}
+.problem-card h4{font-weight:700;font-size:.9rem;margin-bottom:6px;color:var(--ink)}
+.problem-card p{font-size:.82rem;color:var(--ink-50);line-height:1.65}
+
+.problem-banner{
+  margin-top:32px;background:var(--ink);border-radius:var(--r-lg);
+  padding:24px 28px;display:flex;align-items:center;gap:16px;
+  color:#fff;flex-wrap:wrap
+}
+.problem-banner-icon{font-size:1.5rem;flex-shrink:0}
+.problem-banner h4{font-weight:700;font-size:.95rem;margin-bottom:2px}
+.problem-banner p{font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.5}
+
+/* ────────── SOLUTION ────────── */
+.solution-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:56px;align-items:center;margin-top:52px
+}
+.sol-steps{display:flex;flex-direction:column;gap:12px}
+.sol-step{
+  display:flex;gap:16px;align-items:flex-start;
+  padding:18px 20px;border-radius:var(--r-md);
+  border:1px solid var(--ink-06);background:var(--cream);
+  transition:all .25s var(--ease-out-expo)
+}
+.sol-step:hover{border-color:var(--flame-20);background:var(--white);box-shadow:var(--shadow-subtle);transform:translateX(4px)}
+.sol-step-num{
+  width:34px;height:34px;border-radius:var(--r-sm);
+  background:var(--ink);color:#fff;
+  display:grid;place-items:center;flex-shrink:0;
+  font-weight:800;font-size:.82rem;
   transition:background .2s
 }
-.sol-list li:hover .sol-num{background:var(--orange)}
-.sol-txt h4{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.93rem;color:var(--blue);margin-bottom:3px}
-.sol-txt p{font-size:.83rem;color:var(--gray-mid)}
-.sol-visual{
-  background:linear-gradient(145deg,var(--blue),var(--blue-dark));
-  border-radius:var(--radius-xl);padding:34px;text-align:center;
-  box-shadow:var(--shadow-lg);border:1px solid rgba(255,255,255,.07)
-}
-.sol-big{font-family:'Montserrat',sans-serif;font-weight:900;font-size:3.8rem;color:var(--orange);line-height:1;text-shadow:0 0 30px rgba(249,87,56,.4)}
-.sol-big-lbl{color:rgba(255,255,255,.65);font-size:.88rem;margin-top:6px;margin-bottom:26px;line-height:1.5}
-.sol-hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:20px 0}
-.sol-row{display:flex;justify-content:space-between;margin-bottom:10px;align-items:center}
-.sol-row span{font-size:.82rem;color:rgba(255,255,255,.48)}
-.sol-row strong{font-family:'Montserrat',sans-serif;font-size:.82rem;color:#fff}
+.sol-step:hover .sol-step-num{background:var(--flame)}
+.sol-step h4{font-weight:700;font-size:.88rem;margin-bottom:3px}
+.sol-step p{font-size:.8rem;color:var(--ink-50);line-height:1.55}
 
-/* ── AGENT VOCAL ── */
-#vocal{background:linear-gradient(150deg,var(--blue) 0%,#0a2d52 100%);padding:88px 8%}
-.vocal-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.vocal-lbl{color:var(--orange)}
-.vocal-ttl{color:#fff}
-.vocal-dsc{color:rgba(255,255,255,.6);margin-bottom:28px;line-height:1.75}
-.vpoints{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:32px}
-.vpoints li{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.82);font-size:.91rem}
-.vpoints li::before{content:'';width:22px;height:22px;border-radius:50%;flex-shrink:0;background:rgba(249,87,56,.18) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F95738' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/13px no-repeat;border:1.5px solid rgba(249,87,56,.35)}
-.vocal-card{
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
-  border-radius:var(--radius-xl);padding:32px;text-align:center;
-  backdrop-filter:blur(12px);box-shadow:0 20px 60px rgba(0,0,0,.2)
+.sol-results{
+  background:var(--ink);border-radius:var(--r-xl);
+  padding:36px;color:#fff;
+  box-shadow:var(--shadow-elevated)
 }
-.v-avatar{
-  width:80px;height:80px;border-radius:50%;
-  background:linear-gradient(135deg,var(--orange),#ffb347);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 16px;font-size:2rem;
-  box-shadow:0 0 0 6px rgba(249,87,56,.15),0 0 0 12px rgba(249,87,56,.07)
+.sol-results-big{
+  font-family:var(--font-display);font-size:4rem;
+  color:var(--flame);line-height:1;letter-spacing:-.02em;
+  text-shadow:0 0 40px var(--flame-40)
 }
-.v-ttl{font-family:'Montserrat',sans-serif;font-weight:700;color:#fff;font-size:.95rem;margin-bottom:4px}
-.v-sub{font-size:.78rem;color:rgba(255,255,255,.42);margin-bottom:18px}
-.wave{display:flex;align-items:flex-end;justify-content:center;gap:4px;height:40px;margin-bottom:16px}
-.wave span{display:block;width:5px;border-radius:3px;background:var(--orange);animation:wv 1.2s ease-in-out infinite}
-.wave span:nth-child(1){height:14px;animation-delay:0s}
-.wave span:nth-child(2){height:26px;animation-delay:.1s}
-.wave span:nth-child(3){height:36px;animation-delay:.2s}
-.wave span:nth-child(4){height:22px;animation-delay:.3s}
-.wave span:nth-child(5){height:40px;animation-delay:.4s}
-.wave span:nth-child(6){height:28px;animation-delay:.5s}
-.wave span:nth-child(7){height:16px;animation-delay:.6s}
-@keyframes wv{0%,100%{transform:scaleY(1);opacity:.55}50%{transform:scaleY(1.6);opacity:1}}
-.v-status{font-size:.78rem;color:#6ef0b0;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:6px}
-.v-status::before{content:'';width:7px;height:7px;border-radius:50%;background:#2ecc71;box-shadow:0 0 8px #2ecc71}
-.v-quote{font-size:.78rem;color:rgba(255,255,255,.4);line-height:1.65;font-style:italic;background:rgba(255,255,255,.04);border-radius:8px;padding:10px 12px}
+.sol-results-lbl{font-size:.86rem;color:rgba(255,255,255,.5);margin-top:4px;margin-bottom:28px;line-height:1.55}
+.sol-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);
+  font-size:.82rem
+}
+.sol-row:last-child{border:none}
+.sol-row span{color:rgba(255,255,255,.4)}
+.sol-row strong{color:#fff;font-weight:600}
+.sol-row strong.highlight{color:var(--flame);font-weight:700}
 
-/* ── COMMENT ÇA MARCHE ── */
-.steps{display:flex;gap:0;margin-top:52px;position:relative;flex-wrap:wrap}
-.steps::before{content:'';position:absolute;top:29px;left:calc(12.5% - 0px);right:calc(12.5% - 0px);height:2px;background:linear-gradient(90deg,var(--orange),var(--blue-mid));z-index:0;opacity:.35}
-.step{flex:1;min-width:150px;text-align:center;padding:0 14px;position:relative;z-index:1}
-.step-n{
-  width:58px;height:58px;border-radius:50%;
-  background:#fff;color:var(--blue);
-  font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.2rem;
-  display:flex;align-items:center;justify-content:center;margin:0 auto 16px;
-  border:2.5px solid var(--gray-border);box-shadow:var(--shadow-sm);
-  transition:all .25s
+/* ────────── STEPS (Comment ça marche) ────────── */
+.how-steps{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;margin-top:52px;position:relative
 }
-.step:hover .step-n{background:var(--orange);color:#fff;border-color:var(--orange);box-shadow:0 6px 20px rgba(249,87,56,.3);transform:scale(1.08) translateY(-3px)}
-.step h4{font-family:'Montserrat',sans-serif;font-weight:700;color:var(--blue);font-size:.88rem;margin-bottom:5px}
-.step p{font-size:.81rem;color:var(--gray-mid);line-height:1.55}
+.how-steps::before{
+  content:'';position:absolute;top:28px;
+  left:calc(12.5%);right:calc(12.5%);
+  height:1.5px;background:linear-gradient(90deg,var(--flame-20),var(--ink-12));
+  z-index:0
+}
+.how-step{text-align:center;padding:0 16px;position:relative;z-index:1}
+.how-step-n{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--cream);border:2px solid var(--ink-12);
+  display:grid;place-items:center;margin:0 auto 18px;
+  font-family:var(--font-display);font-size:1.3rem;color:var(--ink);
+  transition:all .25s var(--ease-out-back)
+}
+.how-step:hover .how-step-n{
+  background:var(--flame);color:#fff;border-color:var(--flame);
+  transform:scale(1.1) translateY(-3px);
+  box-shadow:0 8px 24px var(--flame-40)
+}
+.how-step h4{font-weight:700;font-size:.86rem;margin-bottom:5px}
+.how-step p{font-size:.79rem;color:var(--ink-50);line-height:1.55}
 
-/* ── OFFRES ── */
-#offres{padding:88px 8%;background:var(--gray-bg)}
-.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:24px;margin-top:52px}
+/* ────────── VOCAL ────────── */
+.vocal-grid{
+  display:grid;grid-template-columns:1.1fr .9fr;
+  gap:64px;align-items:center;margin-top:0
+}
+.vocal-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin:24px 0 32px}
+.vocal-features li{
+  display:flex;align-items:center;gap:12px;
+  font-size:.88rem;color:rgba(255,255,255,.7)
+}
+.vocal-features li::before{
+  content:'';width:20px;height:20px;border-radius:50%;flex-shrink:0;
+  background:var(--flame-10) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E8523F' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/12px no-repeat;
+  border:1px solid var(--flame-20)
+}
+.vocal-demo{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--r-xl);padding:36px;text-align:center;
+  backdrop-filter:blur(12px)
+}
+.vocal-avatar{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--flame),#f4845f);
+  display:grid;place-items:center;margin:0 auto 14px;
+  font-size:1.8rem;
+  box-shadow:0 0 0 6px var(--flame-10),0 0 0 12px rgba(232,82,63,.04)
+}
+.vocal-name{font-weight:700;font-size:.9rem;margin-bottom:2px}
+.vocal-sub{font-size:.74rem;color:rgba(255,255,255,.35);margin-bottom:16px}
+.wave-bars{display:flex;align-items:flex-end;justify-content:center;gap:3px;height:36px;margin-bottom:14px}
+.wave-bars span{
+  display:block;width:4px;border-radius:2px;
+  background:var(--flame);
+  animation:wave-anim 1.2s ease-in-out infinite
+}
+.wave-bars span:nth-child(1){height:12px;animation-delay:0s}
+.wave-bars span:nth-child(2){height:22px;animation-delay:.1s}
+.wave-bars span:nth-child(3){height:32px;animation-delay:.2s}
+.wave-bars span:nth-child(4){height:18px;animation-delay:.3s}
+.wave-bars span:nth-child(5){height:36px;animation-delay:.4s}
+.wave-bars span:nth-child(6){height:24px;animation-delay:.5s}
+.wave-bars span:nth-child(7){height:14px;animation-delay:.6s}
+@keyframes wave-anim{0%,100%{transform:scaleY(1);opacity:.4}50%{transform:scaleY(1.5);opacity:1}}
+.vocal-status{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.76rem;color:#6ef0b0;font-weight:700;margin-bottom:12px
+}
+.vocal-status::before{content:'';width:6px;height:6px;border-radius:50%;background:#2ecc71;box-shadow:0 0 8px #2ecc71}
+.vocal-quote{
+  font-size:.78rem;color:rgba(255,255,255,.35);line-height:1.65;
+  font-style:italic;background:rgba(255,255,255,.03);
+  border-radius:var(--r-sm);padding:12px 14px;margin-top:8px
+}
+
+/* ────────── PRICING ────────── */
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:20px;margin-top:52px
+}
 .pack{
-  background:#fff;border-radius:var(--radius-xl);padding:34px 28px;
-  border:1.5px solid var(--gray-border);position:relative;
-  transition:all .28s;box-shadow:var(--shadow-sm)
+  background:var(--white);border-radius:var(--r-xl);
+  padding:32px 26px;border:1.5px solid var(--ink-06);
+  position:relative;transition:all .3s var(--ease-out-expo)
 }
-.pack:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg)}
-.pack.featured{border-color:var(--orange);background:#fff;box-shadow:0 8px 40px rgba(249,87,56,.14)}
-.pack.featured:hover{box-shadow:0 20px 60px rgba(249,87,56,.22)}
-.pack-badge{
-  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-  background:linear-gradient(135deg,var(--orange),#e8472a);color:#fff;
-  font-family:'Montserrat',sans-serif;font-weight:800;font-size:.72rem;
-  letter-spacing:.8px;text-transform:uppercase;padding:5px 20px;border-radius:20px;
-  white-space:nowrap;box-shadow:0 4px 12px rgba(249,87,56,.35)
+.pack:hover{transform:translateY(-6px);box-shadow:var(--shadow-elevated)}
+.pack.featured{border-color:var(--flame);box-shadow:var(--shadow-glow)}
+.pack.featured:hover{box-shadow:0 0 0 1px var(--flame-20), 0 16px 56px var(--flame-20)}
+.pack-popular{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:var(--flame);color:#fff;
+  font-weight:800;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
+  padding:5px 18px;border-radius:50px;white-space:nowrap;
+  box-shadow:0 4px 12px var(--flame-40)
 }
-.pack-icon{font-size:2rem;margin-bottom:14px}
-.pack-name{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.2rem;color:var(--blue);margin-bottom:4px}
-.pack-tagline{font-size:.84rem;color:var(--gray-mid);margin-bottom:20px}
-.pack-price{font-family:'Montserrat',sans-serif;font-weight:900;font-size:2.3rem;color:var(--blue);margin-bottom:4px}
-.pack-price span{font-size:.9rem;font-weight:600;color:var(--gray-mid)}
-.pack-price-note{font-size:.78rem;color:var(--gray-mid);margin-bottom:22px}
-.pack-divider{border:none;border-top:1px solid var(--gray-border);margin:18px 0}
-.pack-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
-.pack-features li{display:flex;align-items:flex-start;gap:10px;font-size:.86rem;color:var(--gray-text)}
-.pack-features li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px}
-.pack-features li.no{color:#bbb}
-.pack-features li.no::before{content:'–';color:#ddd}
-.pack-cta{
+.pack-icon{font-size:1.6rem;margin-bottom:12px;display:block}
+.pack-name{font-family:var(--font-display);font-size:1.3rem;margin-bottom:4px}
+.pack-tagline{font-size:.82rem;color:var(--ink-50);margin-bottom:18px}
+.pack-price{font-family:var(--font-display);font-size:2.4rem;color:var(--ink);letter-spacing:-.02em}
+.pack-price span{font-family:var(--font-body);font-size:.82rem;color:var(--ink-50);font-weight:500}
+.pack-price-note{font-size:.76rem;color:var(--ink-30);margin-bottom:20px}
+.pack-divider{border:none;border-top:1px solid var(--ink-06);margin:16px 0}
+.pack-features{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
+.pack-features li{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:.83rem;color:var(--ink-70)
+}
+.pack-features li::before{content:'✓';color:var(--mint);font-weight:700;flex-shrink:0}
+.pack-features li.disabled{color:var(--ink-30)}
+.pack-features li.disabled::before{content:'—';color:var(--ink-12)}
+.pack-btn{
   display:block;text-align:center;width:100%;
-  background:var(--blue);color:#fff;font-family:'Montserrat',sans-serif;
-  font-weight:800;font-size:.9rem;padding:14px;border-radius:var(--radius);
-  text-decoration:none;border:none;cursor:pointer;transition:all .2s
+  padding:14px;border-radius:var(--r-md);
+  font-weight:700;font-size:.88rem;
+  text-decoration:none;border:1.5px solid var(--ink-12);
+  color:var(--ink);background:transparent;
+  cursor:pointer;transition:all .2s
 }
-.pack.featured .pack-cta{background:linear-gradient(135deg,var(--orange),#e8472a);box-shadow:0 4px 20px rgba(249,87,56,.3)}
-.pack-cta:hover{opacity:.9;transform:translateY(-1px)}
+.pack-btn:hover{border-color:var(--ink);background:var(--ink);color:#fff}
+.pack.featured .pack-btn{
+  background:var(--flame);color:#fff;border-color:var(--flame);
+  box-shadow:0 4px 16px var(--flame-40)
+}
+.pack.featured .pack-btn:hover{background:var(--flame-dark)}
 
-/* ── AVANT/APRÈS ── */
-.cas-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:center;margin-top:48px}
-.cas-box{border-radius:var(--radius-lg);padding:28px 24px}
-.cas-avant{background:#fff8f8;border:1.5px solid #ffd5d2}
-.cas-apres{background:#f0fff9;border:1.5px solid #a8ecd6}
-.cas-lbl{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.73rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
-.cas-avant .cas-lbl{color:#c0392b}
-.cas-apres .cas-lbl{color:var(--green)}
-.cas-item{display:flex;align-items:flex-start;gap:9px;font-size:.87rem;margin-bottom:10px;line-height:1.5}
-.cas-avant .cas-item::before{content:'✗';color:#e74c3c;font-weight:700;flex-shrink:0;margin-top:2px}
-.cas-apres .cas-item::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:2px}
-.cas-arrow{width:50px;text-align:center;font-size:1.6rem;color:var(--orange)}
-.cas-quote{margin-top:28px;background:var(--blue);border-radius:var(--radius-lg);padding:26px 28px;display:flex;align-items:center;gap:18px;box-shadow:var(--shadow-md)}
-.cas-av{width:52px;height:52px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;flex-shrink:0}
-.cas-q{color:rgba(255,255,255,.88);font-style:italic;font-size:.9rem;line-height:1.65;flex:1}
-.cas-qname{color:rgba(255,255,255,.45);font-size:.78rem;margin-top:6px;font-style:normal;font-weight:600}
-.cas-stars{color:var(--orange);font-size:.83rem;letter-spacing:1px;margin-bottom:4px}
+/* ────────── AVANT/APRÈS ────────── */
+.compare-grid{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  gap:0;align-items:stretch;margin-top:48px
+}
+.compare-box{border-radius:var(--r-lg);padding:28px 24px}
+.compare-avant{background:#FFF5F4;border:1px solid #FFDAD7}
+.compare-apres{background:#F0FDF6;border:1px solid #BBF0D1}
+.compare-label{
+  font-weight:800;font-size:.7rem;text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:14px
+}
+.compare-avant .compare-label{color:#C0392B}
+.compare-apres .compare-label{color:var(--mint)}
+.compare-item{
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:.84rem;margin-bottom:9px;line-height:1.5
+}
+.compare-avant .compare-item::before{content:'✗';color:#E74C3C;font-weight:700;flex-shrink:0;margin-top:1px}
+.compare-apres .compare-item::before{content:'✓';color:var(--mint);font-weight:700;flex-shrink:0;margin-top:1px}
+.compare-arrow{
+  display:grid;place-items:center;
+  font-size:1.4rem;color:var(--flame);padding:0 12px
+}
+.testimonial-card{
+  margin-top:28px;background:var(--ink);border-radius:var(--r-lg);
+  padding:24px 28px;display:flex;gap:18px;align-items:center
+}
+.testi-avatar{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--flame);display:grid;place-items:center;
+  font-weight:800;color:#fff;font-size:.95rem;flex-shrink:0
+}
+.testi-content{flex:1}
+.testi-stars{color:var(--flame);font-size:.8rem;letter-spacing:1px;margin-bottom:4px}
+.testi-text{color:rgba(255,255,255,.8);font-size:.86rem;font-style:italic;line-height:1.6}
+.testi-name{color:rgba(255,255,255,.4);font-size:.76rem;margin-top:6px;font-weight:600}
 
-/* ── TÉMOIGNAGES ── */
-.temo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px;margin-top:46px}
-.temo{background:#fff;border-radius:var(--radius-lg);padding:28px 24px;border:1px solid var(--gray-border);transition:all .22s;box-shadow:var(--shadow-sm)}
-.temo:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
-.temo-stars{color:var(--orange);font-size:.88rem;letter-spacing:2px;margin-bottom:12px}
-.temo-txt{font-size:.88rem;color:var(--gray-text);line-height:1.7;font-style:italic;margin-bottom:16px;position:relative;padding-left:16px}
-.temo-txt::before{content:'"';position:absolute;left:0;top:-4px;font-size:1.8rem;color:var(--orange);opacity:.3;font-family:Georgia,serif;line-height:1}
-.temo-auth{display:flex;align-items:center;gap:11px}
-.temo-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-mid));display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;font-size:.82rem;color:#fff;flex-shrink:0}
-.temo-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.86rem;color:var(--blue)}
-.temo-job{font-size:.76rem;color:var(--gray-mid)}
-.temo-result{margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-border);font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.05rem;color:var(--orange)}
-.temo-result small{font-weight:400;font-size:.77rem;color:var(--gray-mid);display:block;margin-top:2px}
+/* ────────── TÉMOIGNAGES ────────── */
+.testimonials-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:18px;margin-top:48px
+}
+.temo-card{
+  background:var(--white);border-radius:var(--r-lg);
+  padding:28px 24px;border:1px solid var(--ink-06);
+  transition:all .3s var(--ease-out-expo)
+}
+.temo-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card)}
+.temo-card .testi-stars{margin-bottom:14px}
+.temo-card .testi-text{color:var(--ink-70);position:relative;padding-left:16px}
+.temo-card .testi-text::before{
+  content:'\201C';position:absolute;left:0;top:-6px;
+  font-family:var(--font-display);font-size:2rem;color:var(--flame-20);line-height:1
+}
+.temo-author{display:flex;align-items:center;gap:12px;margin-top:18px}
+.temo-author-av{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--ink),var(--sea-dark));
+  display:grid;place-items:center;color:#fff;
+  font-weight:800;font-size:.78rem;flex-shrink:0
+}
+.temo-author-name{font-weight:700;font-size:.84rem;color:var(--ink)}
+.temo-author-job{font-size:.74rem;color:var(--ink-50)}
+.temo-result{
+  margin-top:16px;padding-top:14px;border-top:1px solid var(--ink-06);
+  font-family:var(--font-display);font-size:1.15rem;color:var(--flame)
+}
+.temo-result small{font-family:var(--font-body);font-size:.74rem;color:var(--ink-30);display:block;margin-top:2px}
 
-/* ── FAQ ── */
-#faq{padding:80px 8%}
-.faq-list{max-width:740px;margin:40px auto 0;display:flex;flex-direction:column;gap:12px}
-.faq-item{background:#fff;border-radius:var(--radius);border:1.5px solid var(--gray-border);overflow:hidden;transition:border-color .2s}
-.faq-item.open{border-color:var(--blue)}
+/* ────────── FAQ ────────── */
+.faq-list{max-width:720px;margin:44px auto 0;display:flex;flex-direction:column;gap:10px}
+.faq-item{
+  background:var(--white);border-radius:var(--r-md);
+  border:1px solid var(--ink-06);overflow:hidden;
+  transition:border-color .2s
+}
+.faq-item.open{border-color:var(--ink-30)}
 .faq-q{
   display:flex;justify-content:space-between;align-items:center;
-  padding:18px 22px;cursor:pointer;font-family:'Montserrat',sans-serif;
-  font-weight:700;font-size:.92rem;color:var(--blue);transition:color .2s;
-  user-select:none
+  padding:18px 22px;cursor:pointer;
+  font-weight:700;font-size:.9rem;color:var(--ink);
+  transition:color .2s;user-select:none
 }
-.faq-q:hover{color:var(--orange)}
-.faq-icon{width:22px;height:22px;border-radius:50%;background:var(--gray-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.9rem;transition:transform .3s,background .2s}
-.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--orange);color:#fff}
+.faq-q:hover{color:var(--flame)}
+.faq-icon{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--ink-03);display:grid;place-items:center;
+  flex-shrink:0;font-size:.85rem;color:var(--ink-50);
+  transition:all .3s var(--ease-out-expo)
+}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--flame);color:#fff}
 .faq-a{
-  max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s;
-  padding:0 22px;font-size:.88rem;color:var(--gray-mid);line-height:1.7
+  max-height:0;overflow:hidden;
+  transition:max-height .35s ease,padding .3s;
+  padding:0 22px;font-size:.86rem;color:var(--ink-50);line-height:1.7
 }
-.faq-item.open .faq-a{max-height:200px;padding:0 22px 18px}
+.faq-item.open .faq-a{max-height:220px;padding:0 22px 20px}
 
-/* ── CTA KILLER ── */
-#cta{
-  background:linear-gradient(150deg,var(--blue),var(--blue-dark));
-  padding:88px 8%;text-align:center;position:relative;overflow:hidden
+/* ────────── CTA FINAL ────────── */
+.cta-final{
+  background:var(--ink);padding:clamp(64px,10vh,100px) 0;
+  text-align:center;position:relative;overflow:hidden
 }
-#cta::before{content:'';position:absolute;top:-30%;left:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(249,87,56,.1) 0%,transparent 65%);pointer-events:none}
-.cta-box{max-width:720px;margin:0 auto;position:relative;z-index:1}
-.cta-killer-box{
-  background:rgba(249,87,56,.1);border:1px solid rgba(249,87,56,.22);
-  border-radius:10px;padding:16px 22px;margin-bottom:30px;
-  font-family:'Montserrat',sans-serif;font-weight:700;
-  font-size:clamp(.88rem,1.8vw,1rem);color:rgba(255,255,255,.7);font-style:italic
+.cta-final::before{
+  content:'';position:absolute;top:-20%;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,var(--flame-10) 0%,transparent 60%);
+  pointer-events:none
 }
-.cta-killer-box strong{color:var(--orange);font-style:normal}
-.cta-h{font-family:'Montserrat',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:12px}
-.cta-h em{color:var(--orange);font-style:normal}
-.cta-s{color:rgba(255,255,255,.55);font-size:.97rem;margin-bottom:34px}
-.cta-badges{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px}
-.cta-badge{background:rgba(29,158,117,.14);border:1px solid rgba(29,158,117,.28);color:#6ef0b0;border-radius:20px;padding:7px 16px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.4px}
+.cta-box{max-width:640px;margin:0 auto;position:relative;z-index:1}
+.cta-callout{
+  background:var(--flame-10);border:1px solid var(--flame-20);
+  border-radius:var(--r-md);padding:14px 20px;margin-bottom:28px;
+  font-size:.88rem;color:rgba(255,255,255,.6);font-style:italic
+}
+.cta-callout strong{color:var(--flame);font-style:normal}
+.cta-final .heading{
+  text-align:center;margin:0 auto 12px;max-width:580px
+}
+.cta-final .desc{
+  text-align:center;margin:0 auto 32px;
+  color:rgba(255,255,255,.45)
+}
+.cta-badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}
+.cta-badge{
+  background:var(--mint-10);border:1px solid var(--mint-20);
+  color:#6ef0b0;border-radius:50px;padding:6px 14px;
+  font-weight:700;font-size:.74rem;letter-spacing:.02em
+}
 
-/* ── CONTACT ── */
-.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:46px}
-.ci h3{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.35rem;color:var(--blue);margin-bottom:12px}
-.ci p{color:var(--gray-mid);margin-bottom:24px;font-size:.93rem}
-.cd{display:flex;align-items:center;gap:13px;margin-bottom:14px;font-size:.88rem;color:var(--gray-text)}
-.cd-icon{width:38px;height:38px;background:var(--blue);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
-.cd:hover .cd-icon{background:var(--orange)}
-.cd-icon svg{width:17px;height:17px;fill:#fff}
-.ci-badge{display:flex;align-items:center;gap:10px;background:var(--green-light);border:1px solid rgba(29,158,117,.22);color:#156e50;border-radius:8px;padding:12px 15px;font-size:.83rem;font-weight:600;margin-top:20px}
-.ci-badge::before{content:'✓';background:var(--green);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0}
-.cform{background:#fff;border-radius:var(--radius-xl);padding:36px;border:1.5px solid var(--gray-border);box-shadow:var(--shadow-md)}
-.fr{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.fg{margin-bottom:16px}
-.fg label{display:block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:.73rem;color:var(--blue);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
-.fg input,.fg select,.fg textarea{
+/* ────────── CONTACT ────────── */
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1.1fr;
+  gap:48px;align-items:start;margin-top:48px
+}
+.contact-info h3{font-family:var(--font-display);font-size:1.6rem;margin-bottom:10px}
+.contact-info > p{color:var(--ink-50);font-size:.9rem;margin-bottom:24px;line-height:1.7}
+.contact-detail{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:14px;font-size:.86rem
+}
+.contact-icon{
+  width:40px;height:40px;border-radius:var(--r-sm);
+  background:var(--ink);display:grid;place-items:center;
+  flex-shrink:0;transition:background .2s
+}
+.contact-detail:hover .contact-icon{background:var(--flame)}
+.contact-icon svg{width:17px;height:17px;fill:#fff}
+.contact-trust{
+  display:flex;align-items:center;gap:10px;
+  background:var(--mint-10);border:1px solid var(--mint-20);
+  color:var(--mint);border-radius:var(--r-sm);
+  padding:12px 16px;font-size:.82rem;font-weight:600;margin-top:22px
+}
+.contact-trust::before{
+  content:'✓';background:var(--mint);color:#fff;
+  width:20px;height:20px;border-radius:50%;
+  display:grid;place-items:center;font-size:.7rem;
+  font-weight:800;flex-shrink:0
+}
+.contact-form{
+  background:var(--white);border-radius:var(--r-xl);
+  padding:36px;border:1.5px solid var(--ink-06);
+  box-shadow:var(--shadow-card)
+}
+.field{margin-bottom:16px}
+.field label{
+  display:block;font-weight:700;font-size:.72rem;
+  color:var(--ink);margin-bottom:6px;
+  text-transform:uppercase;letter-spacing:.06em
+}
+.field input,.field select,.field textarea{
   width:100%;padding:12px 14px;
-  border:1.5px solid var(--gray-border);border-radius:var(--radius);
-  font-family:'Open Sans',sans-serif;font-size:.87rem;color:var(--gray-text);
-  background:var(--gray-bg);outline:none;transition:all .2s
+  border:1.5px solid var(--ink-06);border-radius:var(--r-sm);
+  font-family:var(--font-body);font-size:.86rem;color:var(--ink);
+  background:var(--cream);outline:none;transition:all .2s
 }
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(13,59,102,.07)}
-.fg textarea{height:96px;resize:vertical}
-.fsub{
-  width:100%;background:linear-gradient(135deg,var(--orange),#e8472a);
-  color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:1rem;
-  padding:15px;border-radius:var(--radius);border:none;cursor:pointer;
-  box-shadow:0 4px 18px rgba(249,87,56,.32);transition:all .2s
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--flame);background:var(--white);
+  box-shadow:0 0 0 3px var(--flame-10)
 }
-.fsub:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(249,87,56,.42)}
-.fnote{font-size:.76rem;color:var(--gray-mid);text-align:center;margin-top:9px}
+.field textarea{height:90px;resize:vertical}
+.submit-btn{
+  width:100%;padding:15px;
+  background:var(--flame);color:#fff;
+  font-family:var(--font-body);font-weight:700;font-size:.92rem;
+  border:none;border-radius:var(--r-md);cursor:pointer;
+  box-shadow:0 4px 18px var(--flame-40);
+  transition:all .2s
+}
+.submit-btn:hover{background:var(--flame-dark);transform:translateY(-1px);box-shadow:0 8px 28px var(--flame-40)}
+.submit-btn:disabled{opacity:.7;cursor:not-allowed;transform:none}
+.form-note{font-size:.74rem;color:var(--ink-30);text-align:center;margin-top:10px}
 
-/* ── FOOTER ── */
-footer{background:var(--blue-dark);padding:52px 8% 28px;border-top:1px solid rgba(255,255,255,.05)}
-.ft{display:flex;justify-content:space-between;align-items:flex-start;gap:36px;flex-wrap:wrap;margin-bottom:36px}
-.fb p{font-size:.83rem;color:rgba(255,255,255,.42);max-width:270px;line-height:1.7;margin-top:12px}
-.fl h4{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.78rem;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
-.fl ul{list-style:none}
-.fl li{margin-bottom:9px}
-.fl a{color:rgba(255,255,255,.42);text-decoration:none;font-size:.83rem;transition:color .2s}
-.fl a:hover{color:var(--orange)}
-.fb2{border-top:1px solid rgba(255,255,255,.07);padding-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:rgba(255,255,255,.26);flex-wrap:wrap;gap:10px}
-.fsoc{display:flex;gap:11px}
-.fsoc a{width:32px;height:32px;border-radius:7px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;transition:all .2s}
-.fsoc a:hover{border-color:var(--orange);background:rgba(249,87,56,.14)}
-.fsoc svg{width:15px;height:15px;fill:rgba(255,255,255,.5)}
+/* ────────── FOOTER ────────── */
+.footer{background:var(--ink);padding:48px 0 24px;border-top:1px solid rgba(255,255,255,.04)}
+.footer-grid{
+  display:flex;justify-content:space-between;gap:32px;
+  flex-wrap:wrap;margin-bottom:32px
+}
+.footer-brand p{font-size:.82rem;color:rgba(255,255,255,.35);max-width:250px;line-height:1.65;margin-top:12px}
+.footer-col h4{font-weight:700;font-size:.72rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:8px}
+.footer-col a{color:rgba(255,255,255,.35);text-decoration:none;font-size:.82rem;transition:color .2s}
+.footer-col a:hover{color:var(--flame)}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.06);
+  padding-top:20px;display:flex;justify-content:space-between;
+  align-items:center;font-size:.74rem;color:rgba(255,255,255,.2);
+  flex-wrap:wrap;gap:10px
+}
 
-/* ── FLOATING WHATSAPP ── */
-.wa-float{
-  position:fixed;bottom:28px;right:28px;z-index:500;
-  width:56px;height:56px;border-radius:50%;
+/* ────────── FLOATING WA ────────── */
+.wa-btn{
+  position:fixed;bottom:24px;right:24px;z-index:500;
+  width:54px;height:54px;border-radius:50%;
   background:linear-gradient(135deg,#25D366,#128C7E);
-  display:flex;align-items:center;justify-content:center;
-  text-decoration:none;box-shadow:0 6px 24px rgba(37,211,102,.4);
-  transition:all .2s;animation:waBounce 2s 3s ease both
+  display:grid;place-items:center;text-decoration:none;
+  box-shadow:0 6px 24px rgba(37,211,102,.4);
+  transition:all .2s
 }
-.wa-float:hover{transform:scale(1.1);box-shadow:0 10px 32px rgba(37,211,102,.5)}
-.wa-float svg{width:28px;height:28px;fill:#fff}
-@keyframes waBounce{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.wa-btn:hover{transform:scale(1.08);box-shadow:0 10px 32px rgba(37,211,102,.5)}
+.wa-btn svg{width:26px;height:26px;fill:#fff}
 
-/* ── FADE IN ── */
-.fi{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}
-.fi.hidden{opacity:0;transform:translateY(20px)}
-.fi.v{opacity:1;transform:none}
-
-/* ── RESPONSIVE ── */
+/* ────────── RESPONSIVE ────────── */
 @media(max-width:900px){
-  .hero-inner{flex-direction:column;text-align:center;padding:60px 6% 50px}
-  .hero-right{width:100%;max-width:400px;margin:0 auto}
-  .hero-btns,.hero-badge,.local-badge{justify-content:center}
-  .hero-micro{justify-content:center}
-  .sol-inner,.vocal-inner,.contact-wrap{grid-template-columns:1fr}
-  .cas-grid{grid-template-columns:1fr}
-  .cas-arrow{display:none}
-  .steps::before{display:none}
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-lead,.hero-proof,.hero-btns,.hero-micro{justify-content:center}
+  .hero-cards{max-width:400px;margin:0 auto}
+  .solution-grid,.vocal-grid,.contact-grid,.compare-grid{grid-template-columns:1fr}
+  .compare-arrow{display:none}
+  .pricing-grid{grid-template-columns:1fr}
+  .how-steps{grid-template-columns:repeat(2,1fr);gap:24px}
+  .how-steps::before{display:none}
   .nav-links,.nav-cta{display:none}
-  .hamburger{display:flex}
-  .fr{grid-template-columns:1fr}
-  .sol-visual{text-align:center}
+  .hamburger{display:block}
 }
 @media(max-width:480px){
-  .sec{padding:64px 5%}
-  .stats{padding:28px 5%;gap:20px}
-  .stat-n{font-size:1.6rem}
-  .pack{padding:26px 20px}
+  .how-steps{grid-template-columns:1fr}
+  .section{padding:clamp(48px,8vh,72px) 0}
 }
 </style>
 </head>
 <body>
 
-<div id="progress-bar"></div>
-
-<!-- ── BARRE URGENCE ── -->
-<div class="ubar">
-  ⚡ Installation en 48h <span>— Résultats visibles dès la 1ère semaine. Audit gratuit disponible cette semaine.</span>
+<!-- TOPBAR -->
+<div class="topbar">
+  <strong>Installation en 48h</strong> — Résultats visibles dès la 1ère semaine. Audit gratuit disponible.
 </div>
 
-<!-- ── NAV ── -->
-<nav id="main-nav">
-  <a href="#hero" class="logo">
-    <div class="logo-icon">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" opacity=".5"/></svg>
-    </div>
-    <span class="logo-text">IA Pro<em>Assist</em></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#probleme">Le problème</a></li>
-    <li><a href="#offres">Nos offres</a></li>
-    <li><a href="#vocal">Agent vocal</a></li>
-    <li><a href="#temoignages">Résultats</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta">🔥 Récupérer mes clients →</a>
-  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <span class="logo-name">IA Pro<em>Assist</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#probleme">Le problème</a></li>
+      <li><a href="#offres">Offres</a></li>
+      <li><a href="#vocal">Agent vocal</a></li>
+      <li><a href="#resultats">Résultats</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Récupérer mes clients →</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
 </nav>
-<div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="Menu mobile">
-  <ul>
-    <li><a href="#probleme" class="m-link">Le problème</a></li>
-    <li><a href="#offres" class="m-link">Nos offres</a></li>
-    <li><a href="#vocal" class="m-link">Agent vocal</a></li>
-    <li><a href="#temoignages" class="m-link">Résultats</a></li>
-    <li><a href="#contact" class="m-link">Contact</a></li>
-  </ul>
-  <a href="#contact" class="m-cta m-link">🔥 Récupérer mes clients →</a>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#probleme" class="mob-link">Le problème</a>
+  <a href="#offres" class="mob-link">Offres</a>
+  <a href="#vocal" class="mob-link">Agent vocal</a>
+  <a href="#resultats" class="mob-link">Résultats</a>
+  <a href="#contact" class="mob-link">Contact</a>
+  <a href="#contact" class="mob-cta mob-link">Récupérer mes clients →</a>
 </div>
 
-<!-- ── HERO ── -->
-<section id="hero">
-  <div class="hero-orb hero-orb-1"></div>
-  <div class="hero-orb hero-orb-2"></div>
-  <div class="grid-bg"></div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-grain"></div>
   <div class="hero-inner">
     <div class="hero-left">
-      <div class="hero-badge">Pour plombiers, électriciens, serruriers, garagistes…</div>
-      <h1 class="hero-h1">
-        Gagnez des clients automatiquement grâce à l'IA<br>
-        <em>même quand vous êtes en intervention</em>
-      </h1>
-      <p class="hero-sub-money">Nous vous aidons à récupérer ces clients automatiquement, sans travailler plus.</p>
-      <p class="hero-sub">J'aide les artisans locaux à répondre automatiquement aux demandes clients 24h/24 — pour ne plus perdre aucun chantier à cause d'un appel manqué ou d'un message ignoré.</p>
-      <div class="local-badge">
-        <span class="local-dot"></span>
-        Service disponible à <strong>Nantes, Rezé &amp; Saint-Nazaire</strong>
-      </div>
-      <span class="local-count">📍 Déjà 12 artisans équipés en Loire-Atlantique</span>
-      <div class="hero-killer">
-        ☠️ <strong>Pendant que vous travaillez, votre concurrent répond déjà à vos clients.</strong> Lui, il a IA ProAssist.
+      <div class="hero-tag"><span class="dot"></span> Pour plombiers, électriciens, serruriers, garagistes…</div>
+      <h1>Gagnez des clients<br>automatiquement,<br><em>même en intervention</em></h1>
+      <p class="hero-lead">L'IA qui répond à vos clients 24h/24 pendant que vous êtes sur le chantier. Plus aucun appel manqué, plus aucun chantier perdu.</p>
+      <div class="hero-proof">
+        <span class="green-dot"></span>
+        Déjà <strong>12 artisans équipés</strong> en Loire-Atlantique
       </div>
       <div class="hero-btns">
-        <a href="#contact" class="btn-main">🔥 Je veux récupérer mes clients</a>
-        <a href="#offres" class="btn-ghost">Voir les offres</a>
+        <a href="#contact" class="btn-primary">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Récupérer mes clients
+        </a>
+        <a href="#offres" class="btn-secondary">Voir les offres</a>
       </div>
-      <p class="hero-micro">⚡ Sans engagement · Installation 48h · Résultats dès semaine 1</p>
+      <div class="hero-micro">
+        <span>✦ Sans engagement</span>
+        <span>✦ Installation 48h</span>
+        <span>✦ Résultats semaine 1</span>
+      </div>
     </div>
-    <div class="hero-right">
-      <div class="mcard">
-        <div class="mcard-lbl">📩 Réponse automatique — à l'instant</div>
-        <div class="mmsg">Bonjour j'ai une fuite urgente, vous êtes disponible ?</div>
-        <div class="mmsg ai"><span>🤖</span><span>Bonjour ! Votre demande est prise en charge. Souhaitez-vous un créneau cet après-midi à 15h ou demain 9h ?</span></div>
-      </div>
-      <div class="mcard">
-        <div class="mcard-lbl">📊 Ce mois — résultats</div>
-        <div class="mstat">
-          <span class="mstat-n" id="counter-rdv">0</span>
-          <span class="mstat-l">clients récupérés<br>automatiquement</span>
-          <span class="mstat-b">↑ +40%</span>
+    <div class="hero-cards">
+      <div class="demo-card">
+        <div class="demo-label">📩 Réponse automatique — à l'instant</div>
+        <div class="msg msg-user">Bonjour, j'ai une fuite urgente. Vous êtes disponible ?</div>
+        <div class="msg msg-ai">
+          <span class="ai-icon">IA</span>
+          <span>Bonjour ! Votre demande est prise en charge. Souhaitez-vous un créneau cet après-midi à 15h ou demain 9h ?</span>
         </div>
       </div>
-      <div class="mcard">
-        <div class="mcard-lbl">📅 RDV confirmés cette semaine</div>
-        <div class="mmsg">Lun 14h – M. Dupont — fuite urgente</div>
-        <div class="mmsg">Mar 9h30 – Mme Martin — chaudière</div>
-        <div class="mmsg">Mer 11h – M. Bernard — devis cuisine</div>
+      <div class="demo-card">
+        <div class="demo-label">📊 Ce mois — résultats</div>
+        <div class="stat-card">
+          <span class="stat-big" id="counter-rdv">0</span>
+          <span class="stat-meta">clients récupérés<br>automatiquement</span>
+          <span class="stat-badge">↑ +40%</span>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-label">📅 RDV confirmés cette semaine</div>
+        <div class="rdv-line"><span class="rdv-time">Lun 14h</span> M. Dupont — fuite urgente</div>
+        <div class="rdv-line"><span class="rdv-time">Mar 9h30</span> Mme Martin — chaudière</div>
+        <div class="rdv-line"><span class="rdv-time">Mer 11h</span> M. Bernard — devis cuisine</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── STATS ── -->
-<div class="stats fi" aria-label="Chiffres clés">
-  <div class="stat"><div class="stat-n">+<em>40%</em></div><div class="stat-d">de clients récupérés</div></div>
-  <div class="stat"><div class="stat-n"><em>0</em></div><div class="stat-d">appel important perdu</div></div>
-  <div class="stat"><div class="stat-n"><em>24h</em>/<em>7</em></div><div class="stat-d">disponible pour vos clients</div></div>
-  <div class="stat"><div class="stat-n">-<em>3h</em></div><div class="stat-d">de gestion par semaine</div></div>
-  <div class="stat"><div class="stat-n"><em>48h</em></div><div class="stat-d">délai d'installation</div></div>
+<!-- METRICS -->
+<div class="metrics">
+  <div class="container metrics-inner" data-reveal>
+    <div class="metric"><div class="metric-n">+<em>40%</em></div><div class="metric-d">de clients récupérés</div></div>
+    <div class="metric"><div class="metric-n"><em>0</em></div><div class="metric-d">appel important perdu</div></div>
+    <div class="metric"><div class="metric-n"><em>24h</em>/<em>7</em></div><div class="metric-d">disponible pour vos clients</div></div>
+    <div class="metric"><div class="metric-n">−<em>3h</em></div><div class="metric-d">de gestion par semaine</div></div>
+    <div class="metric"><div class="metric-n"><em>48h</em></div><div class="metric-d">délai d'installation</div></div>
+  </div>
 </div>
 
-<!-- ── PROBLÈME ── -->
-<section id="probleme" class="sec fi">
-  <span class="lbl">Le problème</span>
-  <h2 class="ttl">Aujourd'hui, vous perdez des clients<br>sans même le savoir</h2>
-  <p class="dsc">Chaque appel manqué, chaque message non répondu = un client perdu. Il ne rappelle pas. Il appelle le suivant.</p>
-  <div class="prob-grid">
-    <div class="prob-card fi"><div class="prob-icon">📵</div><h4>Appels manqués en intervention</h4><p>Impossible de décrocher quand vous êtes sous un évier ou sur un toit. Ce client appelle le concurrent d'à côté.</p></div>
-    <div class="prob-card fi"><div class="prob-icon">😩</div><h4>Soirées à répondre aux messages</h4><p>Après une journée de chantier, vous répondez encore aux SMS et emails. Votre famille vous attend, vous êtes sur le téléphone.</p></div>
-    <div class="prob-card fi"><div class="prob-icon">👻</div><h4>Clients perdus sans le savoir</h4><p>Un message sans réponse sous 30 min = client parti. Ils ne rappellent jamais. Combien en perdez-vous chaque semaine ?</p></div>
-    <div class="prob-card fi"><div class="prob-icon">🗓️</div><h4>Planning géré à la main</h4><p>RDV par SMS, doubles réservations, clients oubliés… Votre agenda est un stress permanent qui vous coûte du temps et de l'argent.</p></div>
-  </div>
-  <div class="prob-footer">
-    <div class="prob-footer-icon">💡</div>
-    <div>
-      <p>Chaque appel manqué = un client perdu. Définitivement.</p>
-      <span>Un artisan perd en moyenne 5 à 8 clients par semaine à cause de messages non répondus. Soit 20 à 35 clients par mois.</span>
+<!-- PROBLÈME -->
+<section id="probleme" class="section">
+  <div class="container">
+    <div data-reveal>
+      <span class="label">Le problème</span>
+      <h2 class="heading">Vous perdez des clients<br><em>sans même le savoir</em></h2>
+      <p class="desc">Chaque appel manqué, chaque message sans réponse = un client qui appelle votre concurrent. Il ne rappelle jamais.</p>
     </div>
-  </div>
-</section>
-
-<!-- ── SOLUTION ── -->
-<section class="sec sec-alt fi">
-  <span class="lbl">La solution</span>
-  <h2 class="ttl">Fini les clients perdus —<br>Moins de gestion. Sans rien changer.</h2>
-  <p class="dsc">IA ProAssist travaille pour vous en permanence. Vos clients ont toujours une réponse. Votre agenda se remplit. Vous, vous travaillez.</p>
-  <div class="sol-inner">
-    <ul class="sol-list">
-      <li class="fi"><div class="sol-num">1</div><div class="sol-txt"><h4>Répond à vos clients automatiquement</h4><p>Messages, emails, réseaux sociaux — réponse personnalisée en moins de 30 secondes, 24h/24.</p></div></li>
-      <li class="fi"><div class="sol-num">2</div><div class="sol-txt"><h4>Filtre les demandes sérieuses</h4><p>Fini les appels inutiles. L'IA écarte les curieux et vous transmet uniquement les prospects prêts à signer.</p></div></li>
-      <li class="fi"><div class="sol-num">3</div><div class="sol-txt"><h4>Remplit votre agenda tout seul</h4><p>Les clients choisissent leur créneau selon vos vraies disponibilités. Zéro va-et-vient, zéro double réservation.</p></div></li>
-      <li class="fi"><div class="sol-num">4</div><div class="sol-txt"><h4>Vous envoie un résumé chaque matin</h4><p>Chaque matin, vous recevez le bilan : prospects qualifiés, RDV du jour, messages importants. En 30 secondes vous êtes à jour.</p></div></li>
-    </ul>
-    <div class="sol-visual fi" role="region" aria-label="Résultats client">
-      <div class="sol-big">+12</div>
-      <div class="sol-big-lbl">RDV supplémentaires par semaine<br>pour un plombier à Toulouse</div>
-      <hr class="sol-hr">
-      <div class="sol-row"><span>Avant IA ProAssist</span><strong>14 RDV/mois</strong></div>
-      <div class="sol-row"><span>Après IA ProAssist</span><strong style="color:var(--orange)">62 RDV/mois</strong></div>
-      <hr class="sol-hr">
-      <div class="sol-row"><span>Appels manqués</span><strong>0</strong></div>
-      <div class="sol-row"><span>Temps admin/semaine</span><strong>30 min</strong></div>
-      <div class="sol-row"><span>Délai d'installation</span><strong>48h</strong></div>
-    </div>
-  </div>
-</section>
-
-<!-- ── COMMENT ÇA MARCHE ── -->
-<section id="comment" class="sec fi">
-  <span class="lbl">Simple comme bonjour</span>
-  <h2 class="ttl">Comment ça marche ?</h2>
-  <p class="dsc">4 étapes. En 48h vous êtes opérationnel. Vous n'avez rien à changer dans votre façon de travailler.</p>
-  <div class="steps">
-    <div class="step fi"><div class="step-n">1</div><h4>Audit gratuit</h4><p>On analyse votre activité ensemble en 15 min. On identifie vos pertes de clients.</p></div>
-    <div class="step fi"><div class="step-n">2</div><h4>Installation rapide</h4><p>Notre équipe configure tout. Vous n'avez rien à faire. Opérationnel en 48h.</p></div>
-    <div class="step fi"><div class="step-n">3</div><h4>L'IA répond à vos clients</h4><p>Chaque message, chaque appel — pris en charge automatiquement, 24h/24.</p></div>
-    <div class="step fi"><div class="step-n">4</div><h4>Vous gagnez des chantiers</h4><p>Vous recevez vos RDV confirmés. Vous n'avez plus qu'à vous présenter.</p></div>
-  </div>
-</section>
-
-<!-- ── AGENT VOCAL ── -->
-<section id="vocal">
-  <div class="vocal-inner">
-    <div class="vocal-content fi">
-      <span class="lbl vocal-lbl">⭐ Notre meilleur argument</span>
-      <h2 class="ttl vocal-ttl">Une secrétaire IA qui répond à vos appels 24h/24</h2>
-      <p class="dsc vocal-dsc">Fini les appels manqués. Votre agent vocal décroche à votre place, parle naturellement, qualifie le prospect et fixe le RDV — même le dimanche à 22h.</p>
-      <ul class="vpoints">
-        <li>Voix naturelle et professionnelle — vos clients ne font pas la différence</li>
-        <li>Collecte nom, adresse, problème et niveau d'urgence</li>
-        <li>Propose un créneau selon votre planning réel</li>
-        <li>Vous envoie un résumé SMS après chaque appel</li>
-        <li>Disponible 24h/24, 7j/7, jours fériés inclus</li>
-      </ul>
-      <a href="#contact" class="btn-main">🔥 Je veux récupérer mes clients →</a>
-    </div>
-    <div class="vocal-card fi">
-      <div class="v-avatar">🎙️</div>
-      <div class="v-ttl">Agent IA ProAssist</div>
-      <div class="v-sub">En ligne · Appel en cours…</div>
-      <div class="wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="v-status">Prospect qualifié — RDV fixé demain 10h</div>
-      <div class="v-quote">"Bonjour, vous êtes bien chez Jean-Pierre Plomberie. Je prends votre appel — pouvez-vous me décrire votre problème ?"</div>
-    </div>
-  </div>
-</section>
-
-<!-- ── OFFRES ── -->
-<section id="offres">
-  <div class="fi">
-    <span class="lbl">Nos offres</span>
-    <h2 class="ttl">Choisissez votre pack<br>selon votre activité</h2>
-    <p class="dsc">Pas de jargon, pas de surprise. Des résultats concrets dès la première semaine.</p>
-  </div>
-  <div class="pricing-grid">
-    <div class="pack fi">
-      <div class="pack-icon">⚡</div>
-      <div class="pack-name">Pack Starter</div>
-      <div class="pack-tagline">Stop aux clients perdus</div>
-      <div class="pack-price">500€ <span>installation</span></div>
-      <div class="pack-price-note">puis 50 à 100 € / mois · sans engagement</div>
-      <hr class="pack-divider">
-      <ul class="pack-features">
-        <li>Réponse automatique aux messages &amp; emails</li>
-        <li>Réponse rapide en moins de 30 secondes</li>
-        <li>Disponible 24h/24, 7j/7</li>
-        <li>Installation en 48h</li>
-        <li>Tableau de bord simple</li>
-        <li class="no">Prise de RDV automatique</li>
-        <li class="no">Agent vocal IA</li>
-      </ul>
-      <a href="#contact" class="pack-cta">Je veux ce pack →</a>
-    </div>
-    <div class="pack featured fi">
-      <div class="pack-badge">⭐ Le plus populaire</div>
-      <div class="pack-icon">🚀</div>
-      <div class="pack-name">Pack Pro</div>
-      <div class="pack-tagline">Organisation + clients</div>
-      <div class="pack-price">800€ <span>installation</span></div>
-      <div class="pack-price-note">puis 100 à 150 € / mois · sans engagement</div>
-      <hr class="pack-divider">
-      <ul class="pack-features">
-        <li>Tout le Pack Starter inclus</li>
-        <li>Prise de RDV automatique 24h/24</li>
-        <li>Qualification des prospects</li>
-        <li>Synchronisation agenda (Google, iCal…)</li>
-        <li>Rappels automatiques avant RDV</li>
-        <li>Résumé quotidien par SMS</li>
-        <li class="no">Agent vocal IA</li>
-      </ul>
-      <a href="#contact" class="pack-cta">Je veux ce pack →</a>
-    </div>
-    <div class="pack fi">
-      <div class="pack-icon">💎</div>
-      <div class="pack-name">Pack Premium</div>
-      <div class="pack-tagline">Assistant complet — zéro appel manqué</div>
-      <div class="pack-price">1500€+ <span>installation</span></div>
-      <div class="pack-price-note">puis 150 à 300 € / mois · sans engagement</div>
-      <hr class="pack-divider">
-      <ul class="pack-features">
-        <li>Tout le Pack Pro inclus</li>
-        <li>Agent vocal IA 24h/24 (appels entrants)</li>
-        <li>Voix naturelle et professionnelle</li>
-        <li>Résumé SMS après chaque appel</li>
-        <li>Génération de leads supplémentaires</li>
-        <li>Support prioritaire 7j/7</li>
-        <li>Rapport mensuel de performance</li>
-      </ul>
-      <a href="#contact" class="pack-cta">Je veux ce pack →</a>
-    </div>
-  </div>
-  <p style="text-align:center;margin-top:24px;font-size:.84rem;color:var(--gray-mid)">
-    💬 Pas sûr de quel pack choisir ? <a href="#contact" style="color:var(--blue);font-weight:700;text-decoration:none">Contactez-nous — on vous guide sans pression →</a>
-  </p>
-</section>
-
-<!-- ── AVANT / APRÈS ── -->
-<section class="sec fi">
-  <span class="lbl">Cas client réel</span>
-  <h2 class="ttl">Un plombier à Toulouse — avant et après</h2>
-  <p class="dsc">Résultats réels après 30 jours avec le Pack Pro.</p>
-  <div class="cas-grid">
-    <div class="cas-box cas-avant">
-      <div class="cas-lbl">✗ Avant IA ProAssist</div>
-      <div class="cas-item">6 appels manqués par jour en intervention</div>
-      <div class="cas-item">Répondait aux messages le soir après 20h</div>
-      <div class="cas-item">Perdait 4 à 5 clients par semaine sans le savoir</div>
-      <div class="cas-item">Planning géré à la main, par SMS</div>
-      <div class="cas-item">4h par semaine de gestion administrative</div>
-      <div class="cas-item">14 RDV par mois en moyenne</div>
-    </div>
-    <div class="cas-arrow">→</div>
-    <div class="cas-box cas-apres">
-      <div class="cas-lbl">✓ Après IA ProAssist</div>
-      <div class="cas-item">0 appel manqué — l'agent vocal décroche à sa place</div>
-      <div class="cas-item">Réponse automatique en 30 secondes, 24h/24</div>
-      <div class="cas-item">+12 RDV supplémentaires par semaine</div>
-      <div class="cas-item">Agenda synchronisé et géré automatiquement</div>
-      <div class="cas-item">30 min de gestion par semaine</div>
-      <div class="cas-item">62 RDV par mois — × 4</div>
-    </div>
-  </div>
-  <div class="cas-quote">
-    <div class="cas-av">MD</div>
-    <div>
-      <div class="cas-stars">★★★★★</div>
-      <div class="cas-q">"J'ai récupéré 5 clients la première semaine. Mon téléphone sonne, mais c'est l'IA qui répond — et moi je reçois juste les RDV confirmés. Simple, rapide, ça marche vraiment."</div>
-      <div class="cas-qname">— Marc D., Plombier-Chauffagiste, Toulouse — Pack Pro depuis 3 mois</div>
-    </div>
-  </div>
-</section>
-
-<!-- ── TÉMOIGNAGES ── -->
-<section id="temoignages" class="sec sec-alt fi">
-  <span class="lbl">Ils nous font confiance</span>
-  <h2 class="ttl">Des vrais artisans. Des vrais résultats.</h2>
-  <p class="dsc">Pas du marketing — des chiffres concrets de clients réels.</p>
-  <div class="temo-grid">
-    <div class="temo fi">
-      <div class="temo-stars">★★★★★</div>
-      <p class="temo-txt">"En 1 semaine j'ai compris que je perdais des clients depuis des années. Maintenant chaque appel est géré, même à 22h un dimanche."</p>
-      <div class="temo-auth"><div class="temo-av">JD</div><div><div class="temo-name">Jean Dupont</div><div class="temo-job">Plombier, Toulouse</div></div></div>
-      <div class="temo-result">+12 RDV / semaine <small>depuis le démarrage · Pack Pro</small></div>
-    </div>
-    <div class="temo fi">
-      <div class="temo-stars">★★★★★</div>
-      <p class="temo-txt">"L'agent vocal est bluffant. Mes clients pensent parler à ma secrétaire. Moi je reçois le résumé direct sur mon téléphone pendant que je travaille."</p>
-      <div class="temo-auth"><div class="temo-av">PL</div><div><div class="temo-name">Pierre Laurent</div><div class="temo-job">Électricien, Lyon</div></div></div>
-      <div class="temo-result">0 appel manqué <small>depuis 3 mois · Pack Premium</small></div>
-    </div>
-    <div class="temo fi">
-      <div class="temo-stars">★★★★★</div>
-      <p class="temo-txt">"Je passais mes soirées à répondre aux messages. Maintenant j'ai du temps pour ma famille. Et je gagne plus parce que je rate moins de clients."</p>
-      <div class="temo-auth"><div class="temo-av">SM</div><div><div class="temo-name">Sophie Martin</div><div class="temo-job">Peintre-décoratrice, Bordeaux</div></div></div>
-      <div class="temo-result">-4h de gestion / semaine <small>et +8 devis signés · Pack Starter</small></div>
-    </div>
-  </div>
-</section>
-
-<!-- ── FAQ ── -->
-<section id="faq" class="sec fi">
-  <span class="lbl">Questions fréquentes</span>
-  <h2 class="ttl" style="text-align:center">Tout ce que vous voulez savoir</h2>
-  <div class="faq-list">
-    <div class="faq-item">
-      <div class="faq-q" tabindex="0" role="button" aria-expanded="false">Est-ce que mes clients vont savoir que c'est une IA ?<span class="faq-icon">+</span></div>
-      <div class="faq-a">Non. L'agent vocal est formé pour parler naturellement, au nom de votre entreprise, avec votre prénom et votre style. La grande majorité des clients ne font pas la différence avec une vraie secrétaire.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" tabindex="0" role="button" aria-expanded="false">Combien de temps pour l'installation ?<span class="faq-icon">+</span></div>
-      <div class="faq-a">En général 48h après l'audit gratuit. Vous n'avez rien à faire — notre équipe s'occupe de tout. Vous recevez un accès à votre tableau de bord dès que tout est prêt.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" tabindex="0" role="button" aria-expanded="false">Et si je veux arrêter ?<span class="faq-icon">+</span></div>
-      <div class="faq-a">Pas d'engagement. Vous pouvez arrêter à tout moment, sans frais. On vous demande juste un préavis de 30 jours pour fermer proprement votre compte.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" tabindex="0" role="button" aria-expanded="false">Ça marche pour quel type d'artisans ?<span class="faq-icon">+</span></div>
-      <div class="faq-a">Plombiers, électriciens, serruriers, garagistes, peintres, carreleurs, chauffagistes, climaticiens… Tout artisan qui reçoit des demandes par téléphone ou message peut bénéficier d'IA ProAssist.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" tabindex="0" role="button" aria-expanded="false">Est-ce que mes données sont protégées ?<span class="faq-icon">+</span></div>
-      <div class="faq-a">Oui. Toutes les données (vos clients, vos RDV, vos appels) sont hébergées en France et ne sont jamais revendues ni partagées. Nous sommes conformes RGPD.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ── CTA FINAL ── -->
-<section id="cta">
-  <div class="cta-box fi">
-    <div class="cta-killer-box">☠️ <strong>Pendant que vous lisez ces lignes, votre concurrent vient peut-être de répondre à l'un de vos clients.</strong> Lui, il ne rate plus rien.</div>
-    <h2 class="cta-h">Ne perdez plus de clients<br>à cause d'un message <em>non répondu</em></h2>
-    <p class="cta-s">Réservez votre audit gratuit de 15 minutes. On analyse ensemble vos pertes de clients et on vous montre exactement comment y remédier.</p>
-    <a href="#contact" class="btn-main" style="font-size:1.05rem;padding:18px 36px">🔥 Je veux récupérer mes clients</a>
-    <div class="cta-badges">
-      <span class="cta-badge">✓ Gratuit &amp; sans engagement</span>
-      <span class="cta-badge">✓ Installation en 48h</span>
-      <span class="cta-badge">✓ Résultats dès semaine 1</span>
-    </div>
-  </div>
-</section>
-
-<!-- ── CONTACT ── -->
-<section id="contact" class="sec sec-alt fi">
-  <span class="lbl">Passez à l'action</span>
-  <h2 class="ttl">On vous rappelle sous 2h</h2>
-  <p class="dsc">3 champs, 30 secondes. Notre équipe vous contacte rapidement — sans jargon, sans pression.</p>
-  <div class="contact-wrap">
-    <div class="ci fi">
-      <h3>On vous rappelle sous 2h</h3>
-      <p>Remplissez le formulaire en 30 secondes. Notre équipe vous contacte rapidement pour votre audit gratuit — sans jargon, sans pression.</p>
-      <div class="cd"><div class="cd-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.83A16 16 0 0 0 15.17 16.1l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><strong>+33 7 59 90 28 19</strong><br><span style="font-size:.8rem;color:var(--gray-mid)">Lun–Ven 8h–18h</span></div></div>
-      <div class="cd"><div class="cd-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><strong><a href="mailto:contact@iaproassist.fr" style="color:inherit;text-decoration:none">contact@iaproassist.fr</a></strong><br><span style="font-size:.8rem;color:var(--gray-mid)">Réponse sous 2h</span></div></div>
-      <div class="cd"><div class="cd-icon"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div><strong>WhatsApp direct</strong><br><span style="font-size:.8rem;color:var(--gray-mid)">Réponse garantie rapide</span></div></div>
-      <div class="ci-badge">Installation rapide — Résultats visibles dès la 1ère semaine</div>
-    </div>
-    <div class="cform fi">
-      <div class="fg"><label>Nom / Entreprise</label><input type="text" placeholder="Jean Dupont – Plomberie du Centre" autocomplete="name"></div>
-      <div class="fg"><label>Téléphone</label><input type="tel" placeholder="06 XX XX XX XX" autocomplete="tel"></div>
-      <div class="fg">
-        <label>Votre problème principal</label>
-        <select>
-          <option value="">Ce qui vous coûte le plus en ce moment</option>
-          <option>J'ai des appels manqués tous les jours</option>
-          <option>Je réponds aux messages le soir</option>
-          <option>Je perds des clients sans le savoir</option>
-          <option>Mon planning est désorganisé</option>
-          <option>Tout ça à la fois</option>
-        </select>
+    <div class="problem-grid">
+      <div class="problem-card" data-reveal data-reveal-delay="1">
+        <span class="problem-icon">📵</span>
+        <h4>Appels manqués en intervention</h4>
+        <p>Impossible de décrocher sous un évier ou sur un toit. Ce client appelle le concurrent d'à côté.</p>
       </div>
-      <button class="fsub" id="submit-btn" onclick="handleSubmit(event)">🔥 Je veux récupérer mes clients</button>
-      <p class="fnote">✓ On vous rappelle sous 2h · ✓ Sans engagement · ✓ 15 min chrono</p>
-      <p class="fnote" style="margin-top:8px;font-style:italic">🔒 Données utilisées uniquement pour traiter votre demande. Jamais revendues.</p>
+      <div class="problem-card" data-reveal data-reveal-delay="2">
+        <span class="problem-icon">😩</span>
+        <h4>Soirées à répondre aux messages</h4>
+        <p>Après une journée de chantier, vous répondez aux SMS et emails au lieu d'être avec votre famille.</p>
+      </div>
+      <div class="problem-card" data-reveal data-reveal-delay="3">
+        <span class="problem-icon">👻</span>
+        <h4>Clients perdus invisiblement</h4>
+        <p>Un message sans réponse sous 30 min = client parti. Combien en perdez-vous chaque semaine ?</p>
+      </div>
+      <div class="problem-card" data-reveal data-reveal-delay="4">
+        <span class="problem-icon">🗓️</span>
+        <h4>Planning géré à la main</h4>
+        <p>RDV par SMS, doubles réservations, clients oubliés… Un stress permanent qui vous coûte de l'argent.</p>
+      </div>
+    </div>
+    <div class="problem-banner" data-reveal>
+      <span class="problem-banner-icon">💡</span>
+      <div>
+        <h4>Un artisan perd 20 à 35 clients par mois</h4>
+        <p>à cause de messages non répondus. Chaque appel manqué = un client perdu définitivement.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="ft">
-    <div class="fb">
-      <a href="#hero" class="logo">
-        <div class="logo-icon"><svg viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="3"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" opacity=".5"/></svg></div>
-        <span class="logo-text">IA Pro<em>Assist</em></span>
-      </a>
-      <p>La seule IA pensée pour les artisans sur le terrain. Parce que votre métier mérite mieux que de perdre des clients inutilement.</p>
+<!-- SOLUTION -->
+<section class="section section-alt">
+  <div class="container">
+    <div data-reveal>
+      <span class="label">La solution</span>
+      <h2 class="heading">Fini les clients perdus.<br><em>Sans rien changer.</em></h2>
+      <p class="desc">IA ProAssist travaille en permanence. Vos clients ont toujours une réponse. Votre agenda se remplit tout seul.</p>
     </div>
-    <div class="fl">
-      <h4>Solutions</h4>
-      <ul>
-        <li><a href="#offres">Pack Starter</a></li>
-        <li><a href="#offres">Pack Pro</a></li>
-        <li><a href="#offres">Pack Premium</a></li>
-        <li><a href="#vocal">Agent vocal IA</a></li>
-      </ul>
-    </div>
-    <div class="fl">
-      <h4>Entreprise</h4>
-      <ul>
-        <li><a href="#comment">Comment ça marche</a></li>
-        <li><a href="#temoignages">Résultats clients</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contact">Récupérer mes clients</a></li>
-        <li><a href="#">Mentions légales</a></li>
-        <li><a href="#">Données personnelles</a></li>
-      </ul>
+    <div class="solution-grid">
+      <div class="sol-steps">
+        <div class="sol-step" data-reveal data-reveal-delay="1">
+          <div class="sol-step-num">1</div>
+          <div><h4>Répond automatiquement</h4><p>Messages, emails, réseaux sociaux — réponse personnalisée en 30 secondes, 24h/24.</p></div>
+        </div>
+        <div class="sol-step" data-reveal data-reveal-delay="2">
+          <div class="sol-step-num">2</div>
+          <div><h4>Filtre les demandes sérieuses</h4><p>L'IA écarte les curieux et vous transmet uniquement les prospects prêts à signer.</p></div>
+        </div>
+        <div class="sol-step" data-reveal data-reveal-delay="3">
+          <div class="sol-step-num">3</div>
+          <div><h4>Remplit votre agenda</h4><p>Les clients choisissent leur créneau selon vos vraies disponibilités. Zéro va-et-vient.</p></div>
+        </div>
+        <div class="sol-step" data-reveal data-reveal-delay="4">
+          <div class="sol-step-num">4</div>
+          <div><h4>Résumé chaque matin</h4><p>Prospects qualifiés, RDV du jour, messages importants. En 30 secondes vous êtes à jour.</p></div>
+        </div>
+      </div>
+      <div class="sol-results" data-reveal>
+        <div class="sol-results-big">+12</div>
+        <div class="sol-results-lbl">RDV supplémentaires par semaine<br>pour un plombier à Toulouse</div>
+        <div class="sol-row"><span>Avant IA ProAssist</span><strong>14 RDV/mois</strong></div>
+        <div class="sol-row"><span>Après IA ProAssist</span><strong class="highlight">62 RDV/mois</strong></div>
+        <div class="sol-row"><span>Appels manqués</span><strong>0</strong></div>
+        <div class="sol-row"><span>Temps admin/semaine</span><strong>30 min</strong></div>
+        <div class="sol-row"><span>Délai d'installation</span><strong>48h</strong></div>
+      </div>
     </div>
   </div>
-  <div class="fb2">
-    <span>© 2025 IA ProAssist – La seule IA pensée pour les artisans sur le terrain</span>
-    <span style="font-size:.75rem;color:rgba(255,255,255,.2)">🔒 Données jamais revendues — Hébergement France — RGPD</span>
-    <div class="fsoc">
-      <a href="#" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
-      <a href="#" title="WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+</section>
+
+<!-- COMMENT ÇA MARCHE -->
+<section id="comment" class="section">
+  <div class="container">
+    <div data-reveal style="text-align:center">
+      <span class="label">Simple comme bonjour</span>
+      <h2 class="heading" style="margin:0 auto 12px;text-align:center">Comment <em>ça marche ?</em></h2>
+      <p class="desc" style="margin:0 auto;text-align:center">4 étapes. En 48h vous êtes opérationnel. Vous n'avez rien à changer.</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step" data-reveal data-reveal-delay="1"><div class="how-step-n">1</div><h4>Audit gratuit</h4><p>On analyse votre activité en 15 min et on identifie vos pertes de clients.</p></div>
+      <div class="how-step" data-reveal data-reveal-delay="2"><div class="how-step-n">2</div><h4>Installation rapide</h4><p>Notre équipe configure tout. Vous n'avez rien à faire. Opérationnel en 48h.</p></div>
+      <div class="how-step" data-reveal data-reveal-delay="3"><div class="how-step-n">3</div><h4>L'IA prend le relais</h4><p>Chaque message, chaque appel — pris en charge automatiquement, 24h/24.</p></div>
+      <div class="how-step" data-reveal data-reveal-delay="4"><div class="how-step-n">4</div><h4>Vous gagnez des chantiers</h4><p>Vous recevez vos RDV confirmés. Vous n'avez plus qu'à vous présenter.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENT VOCAL -->
+<section id="vocal" class="section section-dark">
+  <div class="container">
+    <div class="vocal-grid">
+      <div data-reveal>
+        <span class="label">Notre meilleur argument</span>
+        <h2 class="heading">Une secrétaire IA qui<br>répond à vos appels <em>24h/24</em></h2>
+        <p class="desc">Votre agent vocal décroche, parle naturellement, qualifie le prospect et fixe le RDV — même le dimanche à 22h.</p>
+        <ul class="vocal-features">
+          <li>Voix naturelle — vos clients ne font pas la différence</li>
+          <li>Collecte nom, adresse, problème et urgence</li>
+          <li>Propose un créneau selon votre planning réel</li>
+          <li>Résumé SMS après chaque appel</li>
+          <li>Disponible 24h/24, 7j/7, jours fériés inclus</li>
+        </ul>
+        <a href="#contact" class="btn-primary">Récupérer mes clients →</a>
+      </div>
+      <div class="vocal-demo" data-reveal>
+        <div class="vocal-avatar">🎙️</div>
+        <div class="vocal-name">Agent IA ProAssist</div>
+        <div class="vocal-sub">En ligne · Appel en cours…</div>
+        <div class="wave-bars"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="vocal-status">Prospect qualifié — RDV fixé demain 10h</div>
+        <div class="vocal-quote">"Bonjour, vous êtes bien chez Jean-Pierre Plomberie. Je prends votre appel — pouvez-vous me décrire votre problème ?"</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFRES -->
+<section id="offres" class="section">
+  <div class="container">
+    <div data-reveal style="text-align:center">
+      <span class="label">Nos offres</span>
+      <h2 class="heading" style="margin:0 auto 12px;text-align:center">Choisissez votre pack<br>selon <em>votre activité</em></h2>
+      <p class="desc" style="margin:0 auto;text-align:center">Pas de jargon, pas de surprise. Des résultats concrets dès la première semaine.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pack" data-reveal data-reveal-delay="1">
+        <span class="pack-icon">⚡</span>
+        <div class="pack-name">Starter</div>
+        <div class="pack-tagline">Stop aux clients perdus</div>
+        <div class="pack-price">500€ <span>installation</span></div>
+        <div class="pack-price-note">puis 50 à 100 €/mois · sans engagement</div>
+        <hr class="pack-divider">
+        <ul class="pack-features">
+          <li>Réponse auto messages &amp; emails</li>
+          <li>Réponse en moins de 30 secondes</li>
+          <li>Disponible 24h/24, 7j/7</li>
+          <li>Installation en 48h</li>
+          <li>Tableau de bord simple</li>
+          <li class="disabled">Prise de RDV automatique</li>
+          <li class="disabled">Agent vocal IA</li>
+        </ul>
+        <a href="#contact" class="pack-btn">Choisir le Starter →</a>
+      </div>
+      <div class="pack featured" data-reveal data-reveal-delay="2">
+        <div class="pack-popular">Le plus populaire</div>
+        <span class="pack-icon">🚀</span>
+        <div class="pack-name">Pro</div>
+        <div class="pack-tagline">Organisation + clients</div>
+        <div class="pack-price">800€ <span>installation</span></div>
+        <div class="pack-price-note">puis 100 à 150 €/mois · sans engagement</div>
+        <hr class="pack-divider">
+        <ul class="pack-features">
+          <li>Tout le Pack Starter inclus</li>
+          <li>Prise de RDV automatique 24h/24</li>
+          <li>Qualification des prospects</li>
+          <li>Synchronisation agenda</li>
+          <li>Rappels automatiques avant RDV</li>
+          <li>Résumé quotidien par SMS</li>
+          <li class="disabled">Agent vocal IA</li>
+        </ul>
+        <a href="#contact" class="pack-btn">Choisir le Pro →</a>
+      </div>
+      <div class="pack" data-reveal data-reveal-delay="3">
+        <span class="pack-icon">💎</span>
+        <div class="pack-name">Premium</div>
+        <div class="pack-tagline">Zéro appel manqué</div>
+        <div class="pack-price">1 500€+ <span>installation</span></div>
+        <div class="pack-price-note">puis 150 à 300 €/mois · sans engagement</div>
+        <hr class="pack-divider">
+        <ul class="pack-features">
+          <li>Tout le Pack Pro inclus</li>
+          <li>Agent vocal IA 24h/24</li>
+          <li>Voix naturelle et pro</li>
+          <li>Résumé SMS après chaque appel</li>
+          <li>Génération de leads</li>
+          <li>Support prioritaire 7j/7</li>
+          <li>Rapport mensuel de performance</li>
+        </ul>
+        <a href="#contact" class="pack-btn">Choisir le Premium →</a>
+      </div>
+    </div>
+    <p data-reveal style="text-align:center;margin-top:20px;font-size:.84rem;color:var(--ink-50)">
+      Pas sûr ? <a href="#contact" style="color:var(--flame);font-weight:700;text-decoration:none">On vous guide sans pression →</a>
+    </p>
+  </div>
+</section>
+
+<!-- AVANT / APRÈS -->
+<section class="section section-alt">
+  <div class="container">
+    <div data-reveal>
+      <span class="label">Cas client réel</span>
+      <h2 class="heading">Un plombier à Toulouse —<br><em>avant et après</em></h2>
+      <p class="desc">Résultats réels après 30 jours avec le Pack Pro.</p>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-box compare-avant" data-reveal data-reveal-delay="1">
+        <div class="compare-label">✗ Avant IA ProAssist</div>
+        <div class="compare-item">6 appels manqués par jour</div>
+        <div class="compare-item">Réponses aux messages après 20h</div>
+        <div class="compare-item">4-5 clients perdus par semaine</div>
+        <div class="compare-item">Planning géré par SMS</div>
+        <div class="compare-item">4h d'admin par semaine</div>
+        <div class="compare-item">14 RDV par mois</div>
+      </div>
+      <div class="compare-arrow" data-reveal>→</div>
+      <div class="compare-box compare-apres" data-reveal data-reveal-delay="2">
+        <div class="compare-label">✓ Après IA ProAssist</div>
+        <div class="compare-item">0 appel manqué</div>
+        <div class="compare-item">Réponse auto en 30 secondes</div>
+        <div class="compare-item">+12 RDV supplémentaires/semaine</div>
+        <div class="compare-item">Agenda synchronisé automatiquement</div>
+        <div class="compare-item">30 min de gestion par semaine</div>
+        <div class="compare-item">62 RDV par mois — × 4</div>
+      </div>
+    </div>
+    <div class="testimonial-card" data-reveal>
+      <div class="testi-avatar">MD</div>
+      <div class="testi-content">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"J'ai récupéré 5 clients la première semaine. Mon téléphone sonne, mais c'est l'IA qui répond — et moi je reçois juste les RDV confirmés."</div>
+        <div class="testi-name">— Marc D., Plombier-Chauffagiste, Toulouse — Pack Pro</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TÉMOIGNAGES -->
+<section id="resultats" class="section">
+  <div class="container">
+    <div data-reveal style="text-align:center">
+      <span class="label">Ils nous font confiance</span>
+      <h2 class="heading" style="margin:0 auto 12px;text-align:center">Des vrais artisans.<br><em>Des vrais résultats.</em></h2>
+      <p class="desc" style="margin:0 auto;text-align:center">Pas du marketing — des chiffres concrets de clients réels.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="temo-card" data-reveal data-reveal-delay="1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"En 1 semaine j'ai compris que je perdais des clients depuis des années. Maintenant chaque appel est géré, même à 22h un dimanche."</p>
+        <div class="temo-author">
+          <div class="temo-author-av">JD</div>
+          <div><div class="temo-author-name">Jean Dupont</div><div class="temo-author-job">Plombier, Toulouse</div></div>
+        </div>
+        <div class="temo-result">+12 RDV / semaine <small>depuis le démarrage · Pack Pro</small></div>
+      </div>
+      <div class="temo-card" data-reveal data-reveal-delay="2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"L'agent vocal est bluffant. Mes clients pensent parler à ma secrétaire. Je reçois le résumé direct sur mon téléphone."</p>
+        <div class="temo-author">
+          <div class="temo-author-av">PL</div>
+          <div><div class="temo-author-name">Pierre Laurent</div><div class="temo-author-job">Électricien, Lyon</div></div>
+        </div>
+        <div class="temo-result">0 appel manqué <small>depuis 3 mois · Pack Premium</small></div>
+      </div>
+      <div class="temo-card" data-reveal data-reveal-delay="3">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Je passais mes soirées à répondre aux messages. Maintenant j'ai du temps pour ma famille. Et je gagne plus."</p>
+        <div class="temo-author">
+          <div class="temo-author-av">SM</div>
+          <div><div class="temo-author-name">Sophie Martin</div><div class="temo-author-job">Peintre-décoratrice, Bordeaux</div></div>
+        </div>
+        <div class="temo-result">−4h de gestion / semaine <small>+8 devis signés · Pack Starter</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section section-alt">
+  <div class="container">
+    <div data-reveal style="text-align:center">
+      <span class="label">Questions fréquentes</span>
+      <h2 class="heading" style="margin:0 auto 12px;text-align:center">Tout ce que vous<br><em>voulez savoir</em></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item" data-reveal>
+        <div class="faq-q" tabindex="0" role="button" aria-expanded="false">Est-ce que mes clients vont savoir que c'est une IA ?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Non. L'agent vocal parle naturellement, au nom de votre entreprise, avec votre prénom et votre style. La grande majorité des clients ne font pas la différence avec une vraie secrétaire.</div>
+      </div>
+      <div class="faq-item" data-reveal>
+        <div class="faq-q" tabindex="0" role="button" aria-expanded="false">Combien de temps pour l'installation ?<span class="faq-icon">+</span></div>
+        <div class="faq-a">En général 48h après l'audit gratuit. Notre équipe s'occupe de tout. Vous recevez un accès à votre tableau de bord dès que c'est prêt.</div>
+      </div>
+      <div class="faq-item" data-reveal>
+        <div class="faq-q" tabindex="0" role="button" aria-expanded="false">Et si je veux arrêter ?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Pas d'engagement. Vous pouvez arrêter à tout moment sans frais. On demande juste un préavis de 30 jours pour fermer proprement votre compte.</div>
+      </div>
+      <div class="faq-item" data-reveal>
+        <div class="faq-q" tabindex="0" role="button" aria-expanded="false">Ça marche pour quel type d'artisans ?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Plombiers, électriciens, serruriers, garagistes, peintres, carreleurs, chauffagistes, climaticiens… Tout artisan qui reçoit des demandes par téléphone ou message.</div>
+      </div>
+      <div class="faq-item" data-reveal>
+        <div class="faq-q" tabindex="0" role="button" aria-expanded="false">Est-ce que mes données sont protégées ?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Oui. Toutes les données sont hébergées en France et ne sont jamais revendues ni partagées. Nous sommes conformes RGPD.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="container">
+    <div class="cta-box" data-reveal>
+      <div class="cta-callout">☠️ <strong>Pendant que vous lisez ces lignes, votre concurrent répond à vos clients.</strong> Lui, il ne rate plus rien.</div>
+      <h2 class="heading">Ne perdez plus de clients<br>à cause d'un message <em>non répondu</em></h2>
+      <p class="desc">Réservez votre audit gratuit de 15 minutes. On analyse vos pertes de clients et on vous montre comment y remédier.</p>
+      <a href="#contact" class="btn-primary" style="font-size:.98rem;padding:17px 32px">Récupérer mes clients →</a>
+      <div class="cta-badges">
+        <span class="cta-badge">✓ Gratuit &amp; sans engagement</span>
+        <span class="cta-badge">✓ Installation en 48h</span>
+        <span class="cta-badge">✓ Résultats dès semaine 1</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="container">
+    <div data-reveal>
+      <span class="label">Passez à l'action</span>
+      <h2 class="heading">On vous rappelle <em>sous 2h</em></h2>
+      <p class="desc">3 champs, 30 secondes. Notre équipe vous contacte rapidement — sans jargon, sans pression.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info" data-reveal>
+        <h3>Réservez votre audit gratuit</h3>
+        <p>Remplissez le formulaire en 30 secondes. On vous rappelle pour analyser vos pertes de clients et trouver la meilleure solution pour vous.</p>
+        <div class="contact-detail">
+          <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.83A16 16 0 0 0 15.17 16.1l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><strong>+33 7 59 90 28 19</strong><br><span style="font-size:.78rem;color:var(--ink-50)">Lun–Ven 8h–18h</span></div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6" fill="none" stroke="white" stroke-width="2"/></svg></div>
+          <div><strong>contact@iaproassist.fr</strong><br><span style="font-size:.78rem;color:var(--ink-50)">Réponse sous 2h</span></div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+          <div><strong>WhatsApp direct</strong><br><span style="font-size:.78rem;color:var(--ink-50)">Réponse rapide garantie</span></div>
+        </div>
+        <div class="contact-trust">Installation rapide — Résultats visibles dès la 1ère semaine</div>
+      </div>
+      <div class="contact-form" data-reveal>
+        <div class="field"><label>Nom / Entreprise</label><input type="text" id="f-name" placeholder="Jean Dupont – Plomberie du Centre" autocomplete="name"></div>
+        <div class="field"><label>Téléphone</label><input type="tel" id="f-tel" placeholder="06 XX XX XX XX" autocomplete="tel"></div>
+        <div class="field">
+          <label>Votre problème principal</label>
+          <select id="f-problem">
+            <option value="">Ce qui vous coûte le plus…</option>
+            <option>J'ai des appels manqués tous les jours</option>
+            <option>Je réponds aux messages le soir</option>
+            <option>Je perds des clients sans le savoir</option>
+            <option>Mon planning est désorganisé</option>
+            <option>Tout ça à la fois</option>
+          </select>
+        </div>
+        <button class="submit-btn" id="submit-btn" type="button">Récupérer mes clients →</button>
+        <p class="form-note">✓ On vous rappelle sous 2h · ✓ Sans engagement · ✓ 15 min chrono</p>
+        <p class="form-note" style="margin-top:6px;font-style:italic">🔒 Données utilisées uniquement pour traiter votre demande. Jamais revendues.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-mark"><svg viewBox="0 0 24 24" fill="white"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <span class="logo-name" style="color:#fff">IA Pro<em>Assist</em></span>
+        </a>
+        <p>La seule IA pensée pour les artisans sur le terrain. Votre métier mérite mieux que de perdre des clients inutilement.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="#offres">Pack Starter</a></li>
+          <li><a href="#offres">Pack Pro</a></li>
+          <li><a href="#offres">Pack Premium</a></li>
+          <li><a href="#vocal">Agent vocal IA</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Entreprise</h4>
+        <ul>
+          <li><a href="#comment">Comment ça marche</a></li>
+          <li><a href="#resultats">Résultats clients</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#">Mentions légales</a></li>
+          <li><a href="#">Données personnelles</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 IA ProAssist — La seule IA pensée pour les artisans</span>
+      <span>🔒 Hébergement France · RGPD · Données jamais revendues</span>
     </div>
   </div>
 </footer>
 
-<!-- ── FLOATING WHATSAPP ── -->
-<a href="https://wa.me/33759902819" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+<!-- WHATSAPP -->
+<a href="https://wa.me/33759902819" class="wa-btn" target="_blank" rel="noopener" aria-label="WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
 </a>
 
 <script>
-/* Progress bar */
-window.addEventListener('scroll',function(){
-  var d=document.documentElement;
-  var p=(d.scrollTop||document.body.scrollTop)/(d.scrollHeight-d.clientHeight)*100;
-  document.getElementById('progress-bar').style.width=p+'%';
-});
+// Nav scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',scrollY>10)
+})
 
-/* Nav shadow on scroll */
-window.addEventListener('scroll',function(){
-  document.getElementById('main-nav').classList.toggle('scrolled',window.scrollY>10);
-});
+// Hamburger
+const ham=document.getElementById('hamburger')
+const mob=document.getElementById('mobile-menu')
+ham.addEventListener('click',()=>{
+  const open=mob.classList.toggle('open')
+  ham.setAttribute('aria-expanded',open)
+  document.body.style.overflow=open?'hidden':''
+})
+document.querySelectorAll('.mob-link').forEach(a=>{
+  a.addEventListener('click',()=>{
+    mob.classList.remove('open')
+    ham.setAttribute('aria-expanded','false')
+    document.body.style.overflow=''
+  })
+})
 
-/* Hamburger menu */
-var ham=document.getElementById('hamburger');
-var mob=document.getElementById('mobile-menu');
-ham.addEventListener('click',function(){
-  var open=mob.classList.toggle('open');
-  ham.classList.toggle('open',open);
-  ham.setAttribute('aria-expanded',open);
-  document.body.style.overflow=open?'hidden':'';
-});
-document.querySelectorAll('.m-link').forEach(function(a){
-  a.addEventListener('click',function(){
-    mob.classList.remove('open');
-    ham.classList.remove('open');
-    ham.setAttribute('aria-expanded','false');
-    document.body.style.overflow='';
-  });
-});
+// Scroll reveal
+const revealObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');revealObs.unobserve(e.target)}})
+},{threshold:0.06,rootMargin:'0px 0px -40px 0px'})
+document.querySelectorAll('[data-reveal]').forEach(el=>revealObs.observe(el))
 
-/* Scroll reveal */
-window.addEventListener('DOMContentLoaded',function(){
-  var obs=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){e.target.classList.remove('hidden');e.target.classList.add('v');}
-    });
-  },{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
-  document.querySelectorAll('.fi').forEach(function(el){obs.observe(el);});
-});
-
-/* Counter animation */
-function animateCounter(el,target,duration){
-  var start=0,step=target/((duration/1000)*60);
-  var t=setInterval(function(){
-    start+=step;
-    if(start>=target){start=target;clearInterval(t);}
-    el.textContent=Math.round(start);
-  },1000/60);
+// Counter
+const counterEl=document.getElementById('counter-rdv')
+let counterDone=false
+function animateCounter(el,target,dur){
+  let start=0;const step=target/((dur/1000)*60)
+  const t=setInterval(()=>{start+=step;if(start>=target){start=target;clearInterval(t)};el.textContent=Math.round(start)},1000/60)
 }
-var counterEl=document.getElementById('counter-rdv');
-var counterDone=false;
-var cObs=new IntersectionObserver(function(entries){
-  if(entries[0].isIntersecting&&!counterDone){
-    counterDone=true;animateCounter(counterEl,47,1200);
-  }
-});
-cObs.observe(counterEl);
+new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting&&!counterDone){counterDone=true;animateCounter(counterEl,47,1200)}
+}).observe(counterEl)
 
-/* FAQ accordion */
-document.querySelectorAll('.faq-q').forEach(function(q){
+// FAQ
+document.querySelectorAll('.faq-q').forEach(q=>{
   function toggle(){
-    var item=q.parentElement;
-    var isOpen=item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false');});
-    if(!isOpen){item.classList.add('open');q.setAttribute('aria-expanded','true');}
+    const item=q.parentElement,isOpen=item.classList.contains('open')
+    document.querySelectorAll('.faq-item').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false')})
+    if(!isOpen){item.classList.add('open');q.setAttribute('aria-expanded','true')}
   }
-  q.addEventListener('click',toggle);
-  q.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
-});
+  q.addEventListener('click',toggle)
+  q.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle()}})
+})
 
-/* Form submit */
-function handleSubmit(e){
-  e.preventDefault();
-  var btn=document.getElementById('submit-btn');
-  var form=btn.closest('.cform');
-  var nom=form.querySelector('input[type="text"]').value.trim();
-  var tel=form.querySelector('input[type="tel"]').value.trim();
-  var probleme=form.querySelector('select').value;
-  if(!nom||!tel){alert('Merci de remplir votre nom et téléphone.');return;}
-  btn.textContent='Envoi en cours...';btn.disabled=true;
+// Form
+document.getElementById('submit-btn').addEventListener('click',function(e){
+  e.preventDefault()
+  const btn=this
+  const nom=document.getElementById('f-name').value.trim()
+  const tel=document.getElementById('f-tel').value.trim()
+  const prob=document.getElementById('f-problem').value
+  if(!nom||!tel){alert('Merci de remplir votre nom et téléphone.');return}
+  btn.textContent='Envoi en cours…';btn.disabled=true
   fetch('https://hook.eu1.make.com/vpskiy3alxjj8c1kqc4x1vmp0tapl63q',{
     method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({nom:nom,telephone:tel,probleme:probleme,source:'Site iaproassist.fr'})
-  }).then(function(){
-    btn.textContent='✅ Demande envoyée ! On vous rappelle sous 2h.';btn.style.background='#1d9e75';
-  }).catch(function(){
-    btn.textContent='✅ Demande envoyée ! On vous rappelle sous 2h.';btn.style.background='#1d9e75';
-  });
-}
+    body:JSON.stringify({nom,telephone:tel,probleme:prob,source:'Site iaproassist.fr'})
+  }).then(()=>{
+    btn.textContent='✅ Demande envoyée ! On vous rappelle sous 2h.';btn.style.background='#19A676'
+  }).catch(()=>{
+    btn.textContent='✅ Demande envoyée ! On vous rappelle sous 2h.';btn.style.background='#19A676'
+  })
+})
 </script>
 </body>
 </html>
