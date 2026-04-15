@@ -177,6 +177,8 @@ body{font-family:var(--font-body);color:var(--ink);background:var(--cream);line-
 .pack-btn{display:block;text-align:center;width:100%;padding:14px;border-radius:var(--r-md);font-weight:700;font-size:.88rem;text-decoration:none;border:1.5px solid var(--ink-12);color:var(--ink);background:transparent;cursor:pointer;transition:all .2s}.pack-btn:hover{border-color:var(--ink);background:var(--ink);color:#fff}
 .pack.featured .pack-btn{background:var(--flame);color:#fff;border-color:var(--flame);box-shadow:0 4px 16px var(--flame-40)}.pack.featured .pack-btn:hover{background:var(--flame-dark)}
 .pack.premium-must .pack-btn{background:linear-gradient(135deg,#D4A017,#F0C040);color:#fff;border-color:var(--gold);box-shadow:0 4px 16px var(--gold-40);font-size:.92rem;padding:16px}.pack.premium-must .pack-btn:hover{background:linear-gradient(135deg,#B88A10,#D4A017);transform:translateY(-1px);box-shadow:0 8px 24px var(--gold-40)}
+.pack-impact{margin-bottom:16px;padding:11px 14px;background:linear-gradient(135deg,rgba(232,82,63,.08),rgba(232,82,63,.04));border-radius:var(--r-sm);border:1px solid var(--flame-20);font-size:.81rem;font-weight:700;color:var(--flame);text-align:center}
+.pack.premium-must .pack-impact{background:linear-gradient(135deg,rgba(212,160,23,.1),rgba(212,160,23,.05));border-color:var(--gold-20);color:var(--gold)}
 .compare-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin-top:48px}
 .compare-box{border-radius:var(--r-lg);padding:28px 24px}.compare-avant{background:#FFF5F4;border:1px solid #FFDAD7}.compare-apres{background:#F0FDF6;border:1px solid #BBF0D1}
 .compare-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}.compare-avant .compare-label{color:#C0392B}.compare-apres .compare-label{color:var(--mint)}
@@ -267,22 +269,22 @@ body{font-family:var(--font-body);color:var(--ink);background:var(--cream);line-
 <section id="probleme" class="section"><div class="container">
   <div data-reveal><span class="label">Le problème</span><h2 class="heading">Vous perdez des clients<br><em>sans même le savoir</em></h2><p class="desc">Chaque appel manqué, chaque devis oublié, chaque client qui vous pose un lapin = du chiffre d'affaires qui disparaît. Et ça se cumule vite.</p></div>
   <div class="problem-grid">
-    <div class="problem-card" data-reveal data-reveal-delay="1"><span class="problem-icon">📵</span><h4>Appels manqués en intervention</h4><p>Impossible de décrocher sous un évier ou sur un toit. Ce client appelle le concurrent d'à côté.</p></div>
-    <div class="problem-card" data-reveal data-reveal-delay="2"><span class="problem-icon">🐰</span><h4>Clients qui posent des lapins</h4><p>Le client oublie le RDV. Vous avez préparé le matériel, fait le trajet — 100 à 200€ perdus à chaque fois.</p></div>
-    <div class="problem-card" data-reveal data-reveal-delay="3"><span class="problem-icon">📋</span><h4>Devis envoyés, jamais relancés</h4><p>Vous envoyez 10 devis, 3 sont signés. Les 7 autres "réfléchissent" et oublient. Personne ne les relance.</p></div>
-    <div class="problem-card" data-reveal data-reveal-delay="4"><span class="problem-icon">⭐</span><h4>Avis Google : la page blanche</h4><p>Vous savez qu'il faut des avis. Mais après un chantier, vous n'avez jamais le temps de demander. Votre concurrent en a 50.</p></div>
+    <div class="problem-card" data-reveal data-reveal-delay="1"><span class="problem-icon">📵</span><h4>Vous êtes sur le chantier, le téléphone sonne</h4><p>Impossible de décrocher sous un évier ou sur un toit. Ce client appelle le concurrent d'à côté — et ne rappelle pas.</p></div>
+    <div class="problem-card" data-reveal data-reveal-delay="2"><span class="problem-icon">🐰</span><h4>Un client ne vient pas, vous avez fait le déplacement</h4><p>Vous avez préparé le matériel, fait la route. Il avait oublié. 100 à 200€ perdus à chaque fois — et ça arrive toutes les semaines.</p></div>
+    <div class="problem-card" data-reveal data-reveal-delay="3"><span class="problem-icon">📋</span><h4>Vos devis dorment dans les boîtes mail</h4><p>Vous envoyez 10 devis, 3 sont signés. Les 7 autres "réfléchissent". Personne ne les relance. Cet argent part chez un concurrent.</p></div>
+    <div class="problem-card" data-reveal data-reveal-delay="4"><span class="problem-icon">⭐</span><h4>Votre concurrent a 50 avis, vous en avez 4</h4><p>Sur Google, c'est lui qui apparaît en premier. Pas vous. Pourtant votre travail est meilleur — mais personne ne le sait.</p></div>
   </div>
   <div class="problem-banner" data-reveal><span class="problem-banner-icon">💡</span><div><h4>Un artisan perd 2 000 à 5 000€ par mois</h4><p>entre les lapins, les devis non relancés et les appels manqués. L'IA règle ces 3 problèmes en même temps.</p></div></div>
 </div></section>
 
 <section class="section section-alt"><div class="container">
-  <div data-reveal><span class="label">La solution</span><h2 class="heading">On récupère vos devis oubliés<br><em>automatiquement.</em></h2><p class="desc">IA ProAssist travaille en permanence. Vos clients ont toujours une réponse. Vos devis sont relancés. Vos RDV sont confirmés. Vos avis montent.</p></div>
+  <div data-reveal><span class="label">La solution</span><h2 class="heading">Vous ne perdez plus<br><em>un seul client.</em></h2><p class="desc">IA ProAssist travaille en permanence à votre place. Vos clients ont toujours une réponse. Vos RDV sont confirmés. Vos devis sont relancés. Votre réputation monte.</p></div>
   <div class="solution-grid">
     <div class="sol-steps">
-      <div class="sol-step" data-reveal data-reveal-delay="1"><div class="sol-step-num">1</div><div><h4>Répond automatiquement 24h/24</h4><p>Messages, emails, réseaux sociaux — réponse personnalisée en 30 secondes.</p></div></div>
-      <div class="sol-step" data-reveal data-reveal-delay="2"><div class="sol-step-num">2</div><div><h4>Rappel RDV — fini les lapins</h4><p>SMS automatique la veille et l'avant-veille. Le client confirme ou replanifie. Fini les déplacements pour rien.</p></div></div>
-      <div class="sol-step" data-reveal data-reveal-delay="3"><div class="sol-step-num">3</div><div><h4>Relance vos devis non signés</h4><p>Relance automatique à J+3 et J+7. Récupérez 2 à 3 devis sur les 7 qui "réfléchissaient" — c'est de l'argent direct.</p></div></div>
-      <div class="sol-step" data-reveal data-reveal-delay="4"><div class="sol-step-num">4</div><div><h4>Collecte vos avis Google</h4><p>Après chaque intervention, un SMS invite le client à laisser un avis. +10 avis/mois = +30% de visibilité locale.</p></div></div>
+      <div class="sol-step" data-reveal data-reveal-delay="1"><div class="sol-step-num">1</div><div><h4>Vos clients obtiennent une réponse en 30 secondes — même à 23h</h4><p>Peu importe l'heure ou ce que vous faites, votre client reçoit une réponse professionnelle immédiatement.</p></div></div>
+      <div class="sol-step" data-reveal data-reveal-delay="2"><div class="sol-step-num">2</div><div><h4>Fini les lapins — vos clients confirment leur RDV en 1 clic</h4><p>SMS automatique la veille et l'avant-veille. Le client confirme ou replanifie. Vous ne vous déplacez plus pour rien.</p></div></div>
+      <div class="sol-step" data-reveal data-reveal-delay="3"><div class="sol-step-num">3</div><div><h4>Vos devis oubliés deviennent des chantiers signés</h4><p>Relance automatique à J+3 et J+7. Récupérez 2 à 3 devis sur les 7 qui "réfléchissaient" — c'est de l'argent direct.</p></div></div>
+      <div class="sol-step" data-reveal data-reveal-delay="4"><div class="sol-step-num">4</div><div><h4>Vos clients satisfaits parlent de vous sur Google</h4><p>Après chaque intervention, un SMS invite le client à laisser un avis. +10 avis/mois = vous apparaissez avant vos concurrents.</p></div></div>
     </div>
     <div class="sol-results" data-reveal>
       <div class="sol-results-big">+12</div><div class="sol-results-lbl">RDV supplémentaires par semaine<br>pour un plombier à Toulouse</div>
@@ -297,18 +299,18 @@ body{font-family:var(--font-body);color:var(--ink);background:var(--cream);line-
 </div></section>
 
 <section id="comment" class="section"><div class="container">
-  <div data-reveal style="text-align:center"><span class="label">Simple comme bonjour</span><h2 class="heading" style="margin:0 auto 12px;text-align:center">Comment <em>ça marche ?</em></h2><p class="desc" style="margin:0 auto;text-align:center">4 étapes. En 48h vous êtes opérationnel. Vous n'avez rien à changer.</p></div>
+  <div data-reveal style="text-align:center"><span class="label">Simple comme bonjour</span><h2 class="heading" style="margin:0 auto 12px;text-align:center">Comment <em>ça marche ?</em></h2><p class="desc" style="margin:0 auto;text-align:center">4 étapes. En 48h vous êtes opérationnel. Vous n'avez rien à changer dans votre façon de travailler.</p></div>
   <div class="how-steps">
-    <div class="how-step" data-reveal data-reveal-delay="1"><div class="how-step-n">1</div><h4>Audit gratuit</h4><p>On analyse votre activité en 15 min et on chiffre vos pertes : lapins, devis non relancés, appels manqués.</p></div>
-    <div class="how-step" data-reveal data-reveal-delay="2"><div class="how-step-n">2</div><h4>Installation rapide</h4><p>Notre équipe configure tout. Vous n'avez rien à faire. Opérationnel en 48h.</p></div>
-    <div class="how-step" data-reveal data-reveal-delay="3"><div class="how-step-n">3</div><h4>L'IA prend le relais</h4><p>Réponses auto, rappels RDV, relances devis, collecte d'avis — tout tourne 24h/24.</p></div>
-    <div class="how-step" data-reveal data-reveal-delay="4"><div class="how-step-n">4</div><h4>Vous gagnez des chantiers</h4><p>Vous recevez vos RDV confirmés, vos devis signés et vos avis montent. Sans effort.</p></div>
+    <div class="how-step" data-reveal data-reveal-delay="1"><div class="how-step-n">1</div><h4>Audit gratuit</h4><p>On chiffre vos pertes réelles : lapins, devis non relancés, appels manqués. 15 minutes, sans engagement.</p></div>
+    <div class="how-step" data-reveal data-reveal-delay="2"><div class="how-step-n">2</div><h4>On installe tout</h4><p>Vous ne touchez à rien. Notre équipe configure tout en 48h. Vous recevez un accès à votre tableau de bord.</p></div>
+    <div class="how-step" data-reveal data-reveal-delay="3"><div class="how-step-n">3</div><h4>L'IA travaille à votre place</h4><p>Réponses auto, confirmation RDV, relances devis, collecte d'avis — tout tourne sans vous.</p></div>
+    <div class="how-step" data-reveal data-reveal-delay="4"><div class="how-step-n">4</div><h4>Vous récupérez du chiffre</h4><p>Vous recevez vos RDV confirmés, vos devis signés arrivent, vos avis montent. Sans effort supplémentaire.</p></div>
   </div>
 </div></section>
 
 <section id="vocal" class="section section-dark"><div class="container"><div class="vocal-grid">
-  <div data-reveal><span class="label">Notre meilleur argument</span><h2 class="heading">Une secrétaire IA qui<br>répond à vos appels <em>24h/24</em></h2><p class="desc">Votre agent vocal décroche, parle naturellement, qualifie le prospect et fixe le RDV — même le dimanche à 22h.</p>
-    <ul class="vocal-features"><li>Voix naturelle — vos clients ne font pas la différence</li><li>Collecte nom, adresse, problème et urgence</li><li>Propose un créneau selon votre planning réel</li><li>Résumé SMS après chaque appel</li><li>Disponible 24h/24, 7j/7, jours fériés inclus</li></ul>
+  <div data-reveal><span class="label">Notre meilleur argument</span><h2 class="heading">Chaque appel devient<br>une opportunité,<br><em>même quand vous travaillez</em></h2><p class="desc">Votre assistant répond à vos appels 24h/24 au nom de votre entreprise. Vos clients pensent parler à votre secrétaire — pas à une IA.</p>
+    <ul class="vocal-features"><li>Voix naturelle — vos clients ne font pas la différence</li><li>Comprend la demande, qualifie le prospect, fixe le RDV</li><li>Filtre les appels inutiles — vous ne perdez plus de temps</li><li>Résumé SMS après chaque appel reçu</li><li>Disponible 24h/24, 7j/7, jours fériés inclus</li></ul>
     <a href="#contact" class="btn-primary">Récupérer mes clients →</a></div>
   <div class="vocal-demo" data-reveal><div class="vocal-avatar">🎙️</div><div class="vocal-name">Agent IA ProAssist</div><div class="vocal-sub">En ligne · Appel en cours…</div><div class="wave-bars"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="vocal-status">Prospect qualifié — RDV fixé demain 10h</div><div class="vocal-quote">"Bonjour, vous êtes bien chez Jean-Pierre Plomberie. Je prends votre appel — pouvez-vous me décrire votre problème ?"</div></div>
 </div></div></section>
@@ -316,9 +318,88 @@ body{font-family:var(--font-body);color:var(--ink);background:var(--cream);line-
 <section id="offres" class="section"><div class="container">
   <div data-reveal style="text-align:center"><span class="label">Nos offres</span><h2 class="heading" style="margin:0 auto 12px;text-align:center">Choisissez votre pack<br>selon <em>votre activité</em></h2><p class="desc" style="margin:0 auto;text-align:center">Pas de jargon, pas de surprise. Des résultats concrets dès la première semaine.</p></div>
   <div class="pricing-grid">
-    <div class="pack" data-reveal data-reveal-delay="1"><span class="pack-icon">⚡</span><div class="pack-name">Starter</div><div class="pack-tagline">Stop aux clients perdus</div><div class="pack-price">500€ <span>installation</span></div><div class="pack-price-note">puis 50 à 100 €/mois · sans engagement</div><hr class="pack-divider"><ul class="pack-features"><li>Réponse auto messages &amp; emails</li><li>Réponse en moins de 30 secondes</li><li>Disponible 24h/24, 7j/7</li><li>Installation en 48h</li><li>Tableau de bord simple</li><li class="disabled">Rappel RDV — fini les lapins</li><li class="disabled">Relance devis automatique</li><li class="disabled">Avis Google automatique</li><li class="disabled">Agent vocal IA</li></ul><a href="#contact" class="pack-btn">Choisir le Starter →</a></div>
-    <div class="pack featured" data-reveal data-reveal-delay="2"><div class="pack-popular">Le plus populaire</div><span class="pack-icon">🚀</span><div class="pack-name">Pro</div><div class="pack-tagline">La machine à chantiers</div><div class="pack-price">1 200€ <span>installation</span></div><div class="pack-price-note">puis 250 €/mois · sans engagement</div><hr class="pack-divider"><ul class="pack-features"><li>Tout le Pack Starter inclus</li><li>Prise de RDV automatique 24h/24</li><li>Qualification des prospects</li><li>Synchronisation agenda</li><li>Résumé quotidien par SMS</li><li class="killer">Rappel RDV — fini les lapins (SMS J-1 / J-2)</li><li class="killer">Relance devis non signés (J+3 / J+7)</li><li class="killer">Avis Google automatique après intervention</li><li class="disabled">Agent vocal IA</li></ul><div class="pack-roi"><p>💰 <strong>Un seul devis récupéré rembourse l'installation.</strong></p><p>📆 <strong>Un seul RDV non oublié = 100 à 300€ sauvés.</strong></p><p>⭐ <strong>Les avis Google vous ramènent des clients tous les mois.</strong></p></div><a href="#contact" class="pack-btn" style="margin-top:20px">Choisir le Pro →</a></div>
-    <div class="pack premium-must" data-reveal data-reveal-delay="3"><div class="pack-must-badge">💎 Le must</div><span class="pack-icon">👑</span><div class="pack-name">Premium</div><div class="pack-tagline">Votre secrétaire IA complète</div><div class="pack-price">2 000€+ <span>installation</span></div><div class="pack-price-note">puis 500 €/mois · sans engagement</div><hr class="pack-divider"><ul class="pack-features"><li>Tout le Pack Pro inclus</li><li class="killer-gold">Agent vocal IA 24h/24</li><li class="killer-gold">Voix naturelle — vos clients ne voient rien</li><li>Résumé SMS après chaque appel</li><li>Génération de leads avancée</li><li>Support prioritaire 7j/7</li><li>Rapport mensuel de performance</li></ul><div class="pack-roi" style="border-color:var(--gold-20);background:#FFFDF5"><p>🎙️ <strong>Une vraie secrétaire coûte 1 800€/mois.</strong> Votre agent vocal IA fait le même travail pour 500€.</p></div><a href="#contact" class="pack-btn" style="margin-top:20px">Choisir le Premium →</a></div>
+
+    <!-- STARTER -->
+    <div class="pack" data-reveal data-reveal-delay="1">
+      <span class="pack-icon">⚡</span>
+      <div class="pack-name">Starter</div>
+      <div class="pack-tagline">Ne perdez plus aucun client</div>
+      <div class="pack-price">500€ <span>installation</span></div>
+      <div class="pack-price-note">puis 50 à 100 €/mois · sans engagement</div>
+      <div class="pack-impact">Répondez à tous vos clients, même en intervention</div>
+      <hr class="pack-divider">
+      <ul class="pack-features">
+        <li>Vos clients obtiennent une réponse en 30 secondes</li>
+        <li>Disponible 24h/24, 7j/7 — même le dimanche</li>
+        <li>Réponse par messages, emails et réseaux sociaux</li>
+        <li>Installation en 48h — vous ne changez rien</li>
+        <li>Tableau de bord simple pour tout suivre</li>
+        <li class="disabled">Confirmation RDV — fini les lapins</li>
+        <li class="disabled">Relance automatique des devis oubliés</li>
+        <li class="disabled">Collecte d'avis Google automatique</li>
+        <li class="disabled">Assistant vocal IA</li>
+      </ul>
+      <a href="#contact" class="pack-btn">Choisir le Starter →</a>
+    </div>
+
+    <!-- PRO -->
+    <div class="pack featured" data-reveal data-reveal-delay="2">
+      <div class="pack-popular">Le plus populaire</div>
+      <span class="pack-icon">🚀</span>
+      <div class="pack-name">Pro</div>
+      <div class="pack-tagline">Récupérez les clients que vous perdez</div>
+      <div class="pack-price">1 200€ <span>installation</span></div>
+      <div class="pack-price-note">puis 250 €/mois · sans engagement</div>
+      <div class="pack-impact">Réduisez vos rendez-vous non honorés jusqu'à 70%</div>
+      <hr class="pack-divider">
+      <ul class="pack-features">
+        <li>Tout le Pack Starter inclus</li>
+        <li>Prise de RDV automatique 24h/24</li>
+        <li>Qualification des prospects à votre place</li>
+        <li>Synchronisation avec votre agenda</li>
+        <li>Résumé quotidien par SMS</li>
+        <li class="killer">Ne perdez plus jamais un rendez-vous — confirmation en 1 clic (J-2 / J-1)</li>
+        <li class="killer">Vos devis oubliés deviennent des chantiers (relance J+3 / J+7)</li>
+        <li class="killer">Vos clients satisfaits laissent un avis Google automatiquement</li>
+        <li class="disabled">Assistant vocal IA</li>
+      </ul>
+      <div class="pack-roi">
+        <p>💰 <strong>Un seul devis récupéré rembourse l'installation.</strong></p>
+        <p>📆 <strong>Un seul RDV non oublié = 100 à 300€ sauvés.</strong></p>
+        <p>⭐ <strong>Les avis Google vous ramènent des clients tous les mois.</strong></p>
+      </div>
+      <a href="#contact" class="pack-btn" style="margin-top:20px">Choisir le Pro →</a>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="pack premium-must" data-reveal data-reveal-delay="3">
+      <div class="pack-must-badge">💎 Le must</div>
+      <span class="pack-icon">👑</span>
+      <div class="pack-name">Premium</div>
+      <div class="pack-tagline">Zéro appel manqué — jamais</div>
+      <div class="pack-price">2 000€+ <span>installation</span></div>
+      <div class="pack-price-note">puis 500 €/mois · sans engagement</div>
+      <div class="pack-impact" style="background:linear-gradient(135deg,rgba(212,160,23,.1),rgba(212,160,23,.05));border-color:var(--gold-20);color:var(--gold)">Chaque appel devient une opportunité, même en intervention</div>
+      <hr class="pack-divider">
+      <ul class="pack-features">
+        <li>Tout le Pack Pro inclus</li>
+        <li class="killer-gold">Un assistant répond à vos appels 24h/24 en votre nom</li>
+        <li class="killer-gold">Ne perdez plus aucun client, même en intervention</li>
+        <li>Voix naturelle — vos clients ne font pas la différence</li>
+        <li>Qualification intelligente des prospects</li>
+        <li>Filtrage des appels inutiles</li>
+        <li>Résumé SMS après chaque appel reçu</li>
+        <li>Rappels + confirmations RDV automatiques</li>
+        <li>Synchronisation avec votre agenda en temps réel</li>
+        <li>Rapport mensuel de performance détaillé</li>
+        <li>Support prioritaire 7j/7</li>
+      </ul>
+      <div class="pack-roi" style="border-color:var(--gold-20);background:#FFFDF5">
+        <p>🎙️ <strong>Une vraie secrétaire coûte 1 800€/mois.</strong> Votre assistant IA fait le même travail pour 500€ — sans arrêt maladie, sans congés.</p>
+      </div>
+      <a href="#contact" class="pack-btn" style="margin-top:20px">Choisir le Premium →</a>
+    </div>
+
   </div>
   <p data-reveal style="text-align:center;margin-top:20px;font-size:.84rem;color:var(--ink-50)">Pas sûr ? <a href="#contact" style="color:var(--flame);font-weight:700;text-decoration:none">On vous guide sans pression →</a></p>
 </div></section>
@@ -326,9 +407,9 @@ body{font-family:var(--font-body);color:var(--ink);background:var(--cream);line-
 <section class="section section-alt"><div class="container">
   <div data-reveal><span class="label">Cas client réel</span><h2 class="heading">Un plombier à Toulouse —<br><em>avant et après</em></h2><p class="desc">Résultats réels après 30 jours avec le Pack Pro.</p></div>
   <div class="compare-grid">
-    <div class="compare-box compare-avant" data-reveal data-reveal-delay="1"><div class="compare-label">✗ Avant IA ProAssist</div><div class="compare-item">6 appels manqués par jour</div><div class="compare-item">3 lapins par semaine (450€ perdu)</div><div class="compare-item">7 devis sur 10 jamais relancés</div><div class="compare-item">2 avis Google en 6 mois</div><div class="compare-item">4h d'admin par semaine</div><div class="compare-item">14 RDV par mois</div></div>
+    <div class="compare-box compare-avant" data-reveal data-reveal-delay="1"><div class="compare-label">✗ Avant IA ProAssist</div><div class="compare-item">6 appels manqués par jour — clients perdus</div><div class="compare-item">3 lapins par semaine (450€ perdus)</div><div class="compare-item">7 devis sur 10 jamais relancés</div><div class="compare-item">2 avis Google en 6 mois</div><div class="compare-item">4h d'admin par semaine</div><div class="compare-item">14 RDV par mois</div></div>
     <div class="compare-arrow" data-reveal>→</div>
-    <div class="compare-box compare-apres" data-reveal data-reveal-delay="2"><div class="compare-label">✓ Après IA ProAssist</div><div class="compare-item">0 appel manqué</div><div class="compare-item">0 lapin — rappels automatiques</div><div class="compare-item">+3 devis signés grâce aux relances</div><div class="compare-item">+12 avis Google en 1 mois</div><div class="compare-item">30 min de gestion par semaine</div><div class="compare-item">62 RDV par mois — × 4</div></div>
+    <div class="compare-box compare-apres" data-reveal data-reveal-delay="2"><div class="compare-label">✓ Après IA ProAssist</div><div class="compare-item">0 appel manqué — 0 client perdu</div><div class="compare-item">0 lapin — les clients confirment en 1 clic</div><div class="compare-item">+3 devis signés grâce aux relances auto</div><div class="compare-item">+12 avis Google en 1 mois</div><div class="compare-item">30 min de gestion par semaine</div><div class="compare-item">62 RDV par mois — × 4</div></div>
   </div>
   <div class="testimonial-card" data-reveal><div class="testi-avatar">MD</div><div class="testi-content"><div class="testi-stars">★★★★★</div><div class="testi-text">"Les relances de devis m'ont rapporté 3 chantiers de plus le premier mois. Et les rappels RDV ? Plus un seul lapin depuis. Le Pack Pro se rembourse en une semaine."</div><div class="testi-name">— Marc D., Plombier-Chauffagiste, Toulouse — Pack Pro</div></div></div>
 </div></section>
@@ -351,7 +432,7 @@ body{font-family:var(--font-body);color:var(--ink);background:var(--cream);line-
     <div class="faq-item" data-reveal><div class="faq-q" tabindex="0" role="button" aria-expanded="false">Combien de temps pour l'installation ?<span class="faq-icon">+</span></div><div class="faq-a">En général 48h après l'audit gratuit. Notre équipe s'occupe de tout. Vous recevez un accès à votre tableau de bord dès que c'est prêt.</div></div>
     <div class="faq-item" data-reveal><div class="faq-q" tabindex="0" role="button" aria-expanded="false">Et si je veux arrêter ?<span class="faq-icon">+</span></div><div class="faq-a">Pas d'engagement. Vous pouvez arrêter à tout moment sans frais. On demande juste un préavis de 30 jours pour fermer proprement votre compte.</div></div>
     <div class="faq-item" data-reveal><div class="faq-q" tabindex="0" role="button" aria-expanded="false">Ça marche pour quel type d'artisans ?<span class="faq-icon">+</span></div><div class="faq-a">Plombiers, électriciens, serruriers, garagistes, peintres, carreleurs, chauffagistes, climaticiens… Tout artisan qui reçoit des demandes par téléphone ou message.</div></div>
-    <div class="faq-item" data-reveal><div class="faq-q" tabindex="0" role="button" aria-expanded="false">Le Pack Pro à 250€/mois, c'est rentable ?<span class="faq-icon">+</span></div><div class="faq-a">Un seul devis relancé et signé = 500 à 2 000€ de chantier. Un seul RDV non oublié = 100 à 300€ économisés. Le Pack Pro se rembourse dès la première semaine dans 90% des cas.</div></div>
+    <div class="faq-item" data-reveal><div class="faq-q" tabindex="0" role="button" aria-expanded="false">Le Pack Pro à 250€/mois, c'est vraiment rentable ?<span class="faq-icon">+</span></div><div class="faq-a">Un seul devis relancé et signé = 500 à 2 000€ de chantier. Un seul RDV non oublié = 100 à 300€ économisés. Le Pack Pro se rembourse dès la première semaine dans 90% des cas.</div></div>
     <div class="faq-item" data-reveal><div class="faq-q" tabindex="0" role="button" aria-expanded="false">Est-ce que mes données sont protégées ?<span class="faq-icon">+</span></div><div class="faq-a">Oui. Toutes les données sont hébergées en France et ne sont jamais revendues ni partagées. Nous sommes conformes RGPD.</div></div>
   </div>
 </div></section>
@@ -359,7 +440,7 @@ body{font-family:var(--font-body);color:var(--ink);background:var(--cream);line-
 <section class="cta-final"><div class="container"><div class="cta-box" data-reveal>
   <div class="cta-callout">☠️ <strong>Pendant que vous lisez ces lignes, votre concurrent relance ses devis, rappelle ses clients et collecte des avis Google.</strong> Automatiquement.</div>
   <h2 class="heading">Ne perdez plus de clients<br>à cause d'un devis <em>non relancé</em></h2>
-  <p class="desc">Réservez votre audit gratuit de 15 minutes. On chiffre vos pertes (lapins, devis oubliés, avis manquants) et on vous montre comment y remédier.</p>
+  <p class="desc">Réservez votre audit gratuit de 15 minutes. On chiffre vos pertes réelles et on vous montre exactement combien vous allez récupérer.</p>
   <a href="#contact" class="btn-primary" style="font-size:.98rem;padding:17px 32px">Récupérer mes clients →</a>
   <div class="cta-badges"><span class="cta-badge">✓ Gratuit &amp; sans engagement</span><span class="cta-badge">✓ Installation en 48h</span><span class="cta-badge">✓ Rentabilisé dès semaine 1</span></div>
 </div></div></section>
